@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+	<div class="row  text-center" style="width: 400px; margin-left: auto; margin-right: auto">
+		{% for flashError in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+		{% endfor %}
+
+		<h1 class="h3 mb-3 font-weight-normal">Register</h1>
+		<div class="col border border-dark p-3">
+			{{ form_start(registrationForm) }}
+
+			{{ form_widget(registrationForm) }}
+
+			<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+			{{ form_end(registrationForm) }}
+		</div>
+	</div>
+{% endblock %}
