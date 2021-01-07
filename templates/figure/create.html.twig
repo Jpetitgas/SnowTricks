@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formView 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New figure
+{% endblock %}
+
+{% block body %}
+	<h1>Nouvelle figure</h1>
+
+	{{ form_start(formView) }}
+
+	{{ form_widget(formView) }}
+
+	<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+	{{ form_end(formView) }}
+</div>{% endblock %}

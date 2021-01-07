@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formView 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Hello FigureController!
+{% endblock %}
+
+{% block body %}
+	<div class="row m-5">
+		<img src="\images\main\{{figure.mainpicture}}.jpg" class="img-fluid" alt="Responsive image">
+	</div>
+	<div class="row">
+		<p class="p-3 mb-2" style="white-space:pre-line">{{figure.desciption}}</p>
+	</div>
+
+	<div class="row justify-content-around p-3 mb-2">
+		<div class="col">
+			<h4>
+				<span class="badge badge-info">Redigé par :
+					{{figure.writer.username}}
+					({{figure.date | date ("d/m/Y")}})</span>
+			</h4>
+		</div>
+		{% if figure.datemod is not null %}
+			<div class="col">
+				<h4>
+					<span class="badge badge-warning">Derniere modification le :
+						{{figure.datemod | date ("d/m/Y")}}</span>
+				</h4>
+			</div>
+
+		{% endif %}
+		<div class="col">
+			<h4>
+				<span class="badge badge-secondary mr-0">{{figure.type.description}}</span>
+			</h4>
+		</div>
+
+	</div>
+	{% if app.user %}
+		<div class="row">
+			<div class="col">
+				{{ form_start(formView) }}
+
+				{{ form_widget(formView) }}
+
+				<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+				{{ form_end(formView) }}
+			</div>
+		</div>
+	{% else %}
+		<div class="row">
+			<h5>Vous devez etre connecté pour laisser un commentaire:
+				<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
+			</h5>
+		</div>
+	{% endif %}
+
+	<div class="row justify-content-around p-3 mb-2">
+		<h2>COMMENTAIRES</h2>
+	</div>
+	{% for comment in figure.comments %}
+		<div class="row" style="white-space:pre-line">
+			<p>{{comment.content}}</p>
+		</div>
+	{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}accueil
+{% endblock %}
+
+{% block body %}
+	<img src="\images\main_1.jpg" class="img-fluid" alt="Responsive image">
+
+	<div class="row m-4">
+		<div class="row">
+			{% for figure in figures %}
+				<div class="col-1 col-sm">
+					{% include "figure/_figure_card.html.twig" %}
+				</div>
+				{% if loop.index is divisible by(5) %}
+				</div>
+				<div class="row">
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
