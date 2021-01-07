@@ -24,7 +24,8 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * 
      */
     private $figure;
 
@@ -32,6 +33,12 @@ class Comment
      * @ORM\Column(type="datetime")
      */
     private $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $writer;
 
     public function getId(): ?int
     {
@@ -70,6 +77,18 @@ class Comment
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getWriter(): ?User
+    {
+        return $this->writer;
+    }
+
+    public function setWriter(?User $writer): self
+    {
+        $this->writer = $writer;
 
         return $this;
     }

@@ -2,11 +2,15 @@
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/">Snowtrick</a>
 
-
 		<div class="d-flex flex-row-reverse">
 			{% if app.user %}
 				<div class="p-2">
+					<a class="nav-link" href="{{ path ('figure_create')}}">New figure</a>
+				</div>
+				<div class="p-2">
+
 					<a class="btn  btn-danger" href="{{ path ('app_logout')}}">Sign up</a>
+
 				</div>
 			{% else %}
 				<div class="p-2">

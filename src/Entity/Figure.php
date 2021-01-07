@@ -43,6 +43,7 @@ class Figure
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure")
+     *  
      */
     private $comments;
 
@@ -50,6 +51,21 @@ class Figure
      * @ORM\Column(type="datetime")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainpicture;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_mod;
 
     public function __construct()
     {
@@ -147,6 +163,42 @@ class Figure
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getMainpicture(): ?string
+    {
+        return $this->mainpicture;
+    }
+
+    public function setMainpicture(string $mainpicture): self
+    {
+        $this->mainpicture = $mainpicture;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDateMod(): ?\DateTimeInterface
+    {
+        return $this->date_mod;
+    }
+
+    public function setDateMod(?\DateTimeInterface $date_mod): self
+    {
+        $this->date_mod = $date_mod;
 
         return $this;
     }
