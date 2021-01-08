@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Figure;
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Form\FigureType;
 use App\Form\CommentType;
 use App\Repository\FigureRepository;
@@ -65,8 +66,28 @@ class FigureController extends AbstractController
         $form->handleRequest($request);
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
+            $mainImage = $form->get('mainpicture')->getData();
+
+            $fichier = md5(uniqid()) . '.' . $mainImage->guessExtension();
+            $mainImage->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            $figure->setMainpicture($fichier);
+
+            $images = $form->get('images')->getData();
+            foreach ($images as $image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                $img = new Image();
+                $img->setName($fichier);
+                $figure->addImage($img);
+            }
+
             $figure->setWriter($user);
-            $figure->setMainpicture('main_2');
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
             $figure->setDate(new DateTime());
             $figure->setDateMod(new DateTime());
@@ -81,6 +102,64 @@ class FigureController extends AbstractController
             'formView' => $fromView
         ]);
     }
+
+    /**
+     * @Route("/figure/edit/{slug}", name="figure_edit", priority=-1)
+     */
+    public function edit($slug, Request $request, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    {
+        $figure = $figureRepository->findOneBy(
+            [
+                'slug' => $slug
+            ]
+        );
+        if (!$figure) {
+            throw $this->createNotFoundException("Cette figure n'existe pas");
+        }
+
+        $form = $this->createForm(FigureType::class, $figure);
+        $form->handleRequest($request);
+
+        $user = $securit->getUser();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mainImage = $form->get('mainpicture')->getData();
+
+            $fichier = md5(uniqid()) . '.' . $mainImage->guessExtension();
+            $mainImage->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            $figure->setMainpicture($fichier);
+
+            $images = $form->get('images')->getData();
+            foreach ($images as $image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory', $fichier)
+                );
+                $img = new Image();
+                $img->setName($fichier);
+                $figure->addImage($img);
+            }
+
+            $figure->setWriter($user);
+            $figure->setSlug(strtolower($slugger->slug($figure->getName())));
+            $slug = $figure->getSlug();
+            $figure->setDate(new DateTime());
+            $figure->setDateMod(new DateTime());
+
+            $em->flush();
+            return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
+        }
+
+        $fromView = $form->createView();
+
+        return $this->render('figure/edit.html.twig', [
+            'figure' => $figure,
+            'formView' => $fromView
+        ]);
+    }
+
     /**
      * @Route("/figure/delete/{slug}", name="figure_delete")
      */

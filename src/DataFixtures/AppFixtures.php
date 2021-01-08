@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
                     ->setWriter($admin)
                     ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)
-                    ->setMainpicture('main_' . $p)
+                    ->setMainpicture('main_' . $p . '.jpg')
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
                     ->setDate(new DateTime());
                 $manager->persist($figure);
