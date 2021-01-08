@@ -47,7 +47,7 @@ class AppFixtures extends Fixture
                 $figure = new Figure();
                 $figure->setName($faker->words(3, true))
                     ->setWriter($admin)
-                    ->setDesciption($faker->paragraphs(5, true))
+                    ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)
                     ->setMainpicture('main_' . $p)
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))

@@ -4,7 +4,10 @@ namespace App\Form;
 
 use App\Entity\Description;
 use App\Entity\Figure;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,19 +17,12 @@ class FigureType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('desciption', EntityType::class, [
-                'label' => 'groupe',
-                'placeholder' => '--Choisir un groupe--',
+            ->add('description')
+            ->add('Type', EntityType::class, [
                 'class' => Description::class,
-                'choice_label' => function (Description $description) {
-                    return $description->getDescription();
-                }
-            ])
-            ->add('date')
-            ->add('mainpicture')
-            ->add('slug')
-            ->add('date_mod')
-            ->add('type');
+                'choice_label' => 'description'
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

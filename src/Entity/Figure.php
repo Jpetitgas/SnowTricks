@@ -27,7 +27,7 @@ class Figure
     /**
      * @ORM\Column(type="text")
      */
-    private $desciption;
+    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="relation")
@@ -43,7 +43,7 @@ class Figure
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure")
-     *  
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $comments;
 
@@ -89,14 +89,14 @@ class Figure
         return $this;
     }
 
-    public function getDesciption(): ?string
+    public function getdescription(): ?string
     {
-        return $this->desciption;
+        return $this->description;
     }
 
-    public function setDesciption(string $desciption): self
+    public function setdescription(string $description): self
     {
-        $this->desciption = $desciption;
+        $this->description = $description;
 
         return $this;
     }
