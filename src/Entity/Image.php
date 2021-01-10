@@ -24,9 +24,14 @@ class Image
 
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * 
      */
     private $figure;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $main;
 
     public function getId(): ?int
     {
@@ -53,6 +58,18 @@ class Image
     public function setFigure(?Figure $figure): self
     {
         $this->figure = $figure;
+
+        return $this;
+    }
+
+    public function getMain(): ?bool
+    {
+        return $this->main;
+    }
+
+    public function setMain(bool $main): self
+    {
+        $this->main = $main;
 
         return $this;
     }

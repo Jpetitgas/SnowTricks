@@ -66,14 +66,6 @@ class FigureController extends AbstractController
         $form->handleRequest($request);
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $mainImage = $form->get('mainpicture')->getData();
-
-            $fichier = md5(uniqid()) . '.' . $mainImage->guessExtension();
-            $mainImage->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
-            $figure->setMainpicture($fichier);
 
             $images = $form->get('images')->getData();
             foreach ($images as $image) {
@@ -84,6 +76,7 @@ class FigureController extends AbstractController
                 );
                 $img = new Image();
                 $img->setName($fichier);
+                $img->setMain(false);
                 $figure->addImage($img);
             }
 
@@ -122,29 +115,21 @@ class FigureController extends AbstractController
 
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $mainImage = $form->get('mainpicture')->getData();
-
-            $fichier = md5(uniqid()) . '.' . $mainImage->guessExtension();
-            $mainImage->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
-            $figure->setMainpicture($fichier);
-
             $images = $form->get('images')->getData();
             foreach ($images as $image) {
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
                 $image->move(
-                    $this->getParameter('images_directory', $fichier)
+                    $this->getParameter('images_directory'),
+                    $fichier
                 );
                 $img = new Image();
                 $img->setName($fichier);
+                $img->setMain(false);
                 $figure->addImage($img);
             }
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
-            $slug = $figure->getSlug();
             $figure->setDate(new DateTime());
             $figure->setDateMod(new DateTime());
 

@@ -6,9 +6,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="row m-5">
-		<img src="\images\main\{{figure.mainpicture}}" class="img-fluid" alt="Responsive image">
-	</div>
+	{% for item in figure.images %}
+		{% if item.main %}
+			<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+		{% endif %}
+	{% endfor %}
 
 
 	{% if figure.images %}

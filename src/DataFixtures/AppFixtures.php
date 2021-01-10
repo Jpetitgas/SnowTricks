@@ -2,17 +2,18 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Comment;
 use DateTime;
 use Faker\Factory;
 use App\Entity\User;
+use App\Entity\Image;
 use App\Entity\Figure;
+use App\Entity\Comment;
 use App\Entity\Description;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
@@ -38,6 +39,8 @@ class AppFixtures extends Fixture
             ->Setroles(['ROLE_ADMIN'])
             ->setDate(new datetime);
         $manager->persist($admin);
+
+
         $style = array('grabs', 'rotations', 'flips', 'rotations désaxées', 'slides', 'one foot tricks', 'Old school');
         foreach ($style as $key => $value) {
             $description = new Description;
@@ -45,14 +48,27 @@ class AppFixtures extends Fixture
             $manager->persist($description);
             for ($p = 0; $p < 3; $p++) {
                 $figure = new Figure();
+
                 $figure->setName($faker->words(3, true))
                     ->setWriter($admin)
                     ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)
-                    ->setMainpicture('main_' . $p . '.jpg')
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
                     ->setDate(new DateTime());
                 $manager->persist($figure);
+                $nb = rand(1, 2);
+                $b = rand(0, $nb);
+                for ($m = 0; $m <=  $nb; $m++) {
+                    $img = new Image();
+                    $fichier = "main_" . $m . ".jpg";
+                    $m == $b ? $img->setMain(TRUE) : $img->setMain(FALSE);
+                    $img->setName($fichier);
+                    $img->setFigure($figure);
+                    $manager->persist($img);
+                }
+
+
+
                 for ($n = 0; $n < 5; $n++) {
                     $comment = new Comment();
                     $comment->setFigure($figure)

@@ -52,10 +52,6 @@ class Figure
      */
     private $date;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mainpicture;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -173,17 +169,6 @@ class Figure
         return $this;
     }
 
-    public function getMainpicture(): ?string
-    {
-        return $this->mainpicture;
-    }
-
-    public function setMainpicture(string $mainpicture): self
-    {
-        $this->mainpicture = $mainpicture;
-
-        return $this;
-    }
 
     public function getSlug(): ?string
     {
