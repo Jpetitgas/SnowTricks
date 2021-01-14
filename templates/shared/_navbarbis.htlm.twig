@@ -19,7 +19,12 @@
 					<a class="nav-link" href="{{ path ('app_logout')}}">Se déconnecter</a>
 				</li>
 				<li class="nav-item">
-					<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" height="40">
+					<a class="nav-link" href="{{ path ('edit_user', {'id': app.user.id})}}">
+						<font style="vertical-align: inherit;">
+							<font style="vertical-align: inherit;">
+								<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" height="40"></font>
+						</font>
+					</a>
 				</li>
 
 			{% else %}
