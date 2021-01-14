@@ -2,41 +2,45 @@
 
 {% form_theme formView 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}Hello FigureController!
+{% block title %}edition
 {% endblock %}
 
 {% block body %}
+	<div class="container">
+		<h1>Modification de la figure</h1>
+		<div class="row">
+			<div class="col">
+				{{ form_start(formView) }}
 
-	<div class="row">
-		<div class="col">
-			{{ form_start(formView) }}
+				{{ form_widget(formView.name) }}
+				{{ form_widget(formView.description) }}
+				{{ form_widget(formView.type) }}
+				{{ form_widget(formView.images) }}
 
-			{{ form_widget(formView.name) }}
-			{{ form_widget(formView.description) }}
-			{{ form_widget(formView.type) }}
-			{{ form_widget(formView.images) }}
+				<h3>Image(s) liée(s) à cette figure</h3>
+				<div class="row ">
 
-			<h3>Image(s) liée(s) à cette figure</h3>
-			<div class="row ">
-
-				{% for image in figure.images %}
-					<div class="col-2  {{image.main ? 'border border-dark' }}" cadre>
-						<div class="row">
-							<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail" width="150">
+					{% for image in figure.images %}
+						<div class="col-2  {{image.main ? 'border border-dark' }}" cadre>
+							<div class="row">
+								<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail" width="150">
+							</div>
+							<div class="row">
+								<button id="{{image.id}}" type="button" class="btn btn-primary" main-picture>A la une</button>
+							</button>
 						</div>
-						<div class="row">
-							<button id="{{image.id}}" type="button" class="btn btn-primary" main-picture>A la une</button>
-						</button>
+						<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
+							<i class="fas fa-trash-alt"></i>
+						</a>
 					</div>
-					<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
-						<i class="fas fa-trash-alt"></i>
-					</a>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			</div>
+			{{ form_widget(formView.main) }}
+			<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
+			{{ form_end(formView) }}
 		</div>
-		{{ form_widget(formView.main) }}
-		<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
-		{{ form_end(formView) }}
 	</div>
-</div>{% endblock %}{% block javascripts %}
-<script src="{{ asset('/js/image.js')}}"></script>{% endblock %}
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('/js/image.js')}}"></script>
+{% endblock %}

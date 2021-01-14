@@ -55,7 +55,7 @@ class AppFixtures extends Fixture
             for ($p = 0; $p < 3; $p++) {
                 $figure = new Figure();
 
-                $figure->setName($faker->words(3, true))
+                $figure->setName($faker->words(2, true))
                     ->setWriter($admin)
                     ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)

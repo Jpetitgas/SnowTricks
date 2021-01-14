@@ -6,86 +6,92 @@
 {% endblock %}
 
 {% block body %}
-	{% for item in figure.images %}
-		{% if item.main %}
-			<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+	<div class="container">
+		{% for item in figure.images %}
+			{% if item.main %}
+				<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+			{% endif %}
+		{% endfor %}
+
+
+		{% if figure.images %}
+			<div class="row content-around">
+
+				{% for image in figure.images %}
+					<div class="col-2">
+						<img src="\images\main\{{image.name}}" class="img-thumbnail" width="150">
+					</div>
+				{% endfor %}
+
+			</div>
 		{% endif %}
-	{% endfor %}
-
-
-	{% if figure.images %}
-		<div class="row content-around">
-
-			{% for image in figure.images %}
-				<div class="col-2">
-					<img src="\images\main\{{image.name}}" class="img-thumbnail" width="150">
-				</div>
-			{% endfor %}
-
+		<div class="col-6"></div>
+		<div class=" row">
+			<p class="p-3 mb-2 text-justify" style="white-space:pre-line">{{figure.description}}</p>
 		</div>
-	{% endif %}
-	<div class="col-6"></div>
-	<div class=" row">
-		<p class="p-3 mb-2" style="white-space:pre-line">{{figure.description}}</p>
-	</div>
-	<div class="row justify-content-around p-3 mb-2">
-		<div class="col">
-			<h4>
-				<span class="badge badge-info">Redigé par :
-					{{figure.writer.username}}
-					({{figure.date | date ("d/m/Y")}})</span>
-			</h4>
-		</div>
-		{% if figure.datemod is not null %}
+		<div class="row justify-content-around p-3 mb-2">
 			<div class="col">
 				<h4>
-					<span class="badge badge-warning">Derniere modification le :
-						{{figure.datemod | date ("d/m/Y")}}</span>
+					<span class="badge badge-info">Redigé par :
+						{{figure.writer.username}}
+						({{figure.date | date ("d/m/Y")}})</span>
 				</h4>
 			</div>
+			{% if figure.datemod is not null %}
+				<div class="col">
+					<h4>
+						<span class="badge badge-warning">Derniere modification le :
+							{{figure.datemod | date ("d/m/Y")}}</span>
+					</h4>
+				</div>
 
+			{% endif %}
+			<div class="col">
+				<h4>
+					<span class="badge badge-secondary mr-0">{{figure.type.description}}</span>
+				</h4>
+			</div>
+		</div>
+		{% if app.user %}
+			<div class="row  align-items-center">
+				<div class="col-2">
+					<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
+				</div>
+				<div class="col-8">
+					{{ form_start(formView) }}
+
+					{{ form_widget(formView) }}
+				</div>
+				<div class="col-2">
+					<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+				</div>
+				{{ form_end(formView) }}
+
+			</div>
+		{% else %}
+			<div class="row">
+				<h5>Vous devez etre connecté pour laisser un commentaire:
+					<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
+				</h5>
+			</div>
 		{% endif %}
-		<div class="col">
-			<h4>
-				<span class="badge badge-secondary mr-0">{{figure.type.description}}</span>
-			</h4>
+		<div class="row justify-content-around p-3 mb-2">
+			<h2>COMMENTAIRES</h2>
 		</div>
+		{% for comment in figure.comments %}
+			<div class="card mb-2">
+				<div class="card-body p-2 p-sm-3">
+					<div class="media forum-item">
+						<a href="#" data-toggle="collapse" data-target=".forum-content"><img src="\images\main\{{comment.writer.portrait.name}}" class="mr-3 rounded-circle" width="50" alt="User"/></a>
+						<div class="media-body">
+							<p class="text-light text-justify">
+								{{comment.content}}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		{% endfor %}
 	</div>
-	{% if app.user %}
-		<div class="row  align-items-center">
-			<div class="col-2">
-				<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
-			</div>
-			<div class="col-8">
-				{{ form_start(formView) }}
-
-				{{ form_widget(formView) }}
-			</div>
-			<div class="col-2">
-				<button type="submit" class="btn btn-lg btn-primary center">Register</button>
-			</div>
-			{{ form_end(formView) }}
-
-		</div>
-	{% else %}
-		<div class="row">
-			<h5>Vous devez etre connecté pour laisser un commentaire:
-				<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
-			</h5>
-		</div>
-	{% endif %}
-	<div class="row justify-content-around p-3 mb-2">
-		<h2>COMMENTAIRES</h2>
-	</div>
-	{% for comment in figure.comments %}
-		<div class="row  align-items-center" style="white-space:pre-line">
-			<div class="col-2">
-				<img src="\images\main\{{comment.writer.portrait.name}}" class="rounded-circle" width="100">
-			</div>
-			<div class="col-10">
-				<p>{{comment.content}}</p>
-			</div>
-
-		</div>
-	{% endfor %}
 {% endblock %}
