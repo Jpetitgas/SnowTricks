@@ -8,6 +8,8 @@ use App\Entity\Comment;
 use App\Entity\Image;
 use App\Form\FigureType;
 use App\Form\CommentType;
+use App\Image\MainImage;
+use App\Image\UpLoadImages;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +18,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Constraints\Date;
 
 class FigureController extends AbstractController
 {
+    protected $mainImage;
+    protected $uploadImages;
+
+
+    public function __construct(MainImage $mainImage, UpLoadImages $upLoadImages)
+    {
+        $this->mainImage = $mainImage;
+        $this->uploadImages = $upLoadImages;
+    }
+
+
     /**
      * @Route("/figure/{slug}", name="figure_show", priority=-1)
      */
@@ -68,17 +80,7 @@ class FigureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $images = $form->get('images')->getData();
-            foreach ($images as $image) {
-                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                $image->move(
-                    $this->getParameter('images_directory'),
-                    $fichier
-                );
-                $img = new Image();
-                $img->setName($fichier);
-                $img->setMain(false);
-                $figure->addImage($img);
-            }
+            $this->uploadImages->Upload($images, $figure);
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
@@ -86,6 +88,11 @@ class FigureController extends AbstractController
             $figure->setDateMod(new DateTime());
             $em->persist($figure);
             $em->flush();
+
+            //reglage de l'image principale 
+            $main = $form->get('main')->getData();
+            $figure_id = $figure->getId();
+            $this->mainImage->ChangeMainImage($figure_id, $main);
             return $this->RedirectToRoute('main');
         }
 
@@ -115,18 +122,9 @@ class FigureController extends AbstractController
 
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
+
             $images = $form->get('images')->getData();
-            foreach ($images as $image) {
-                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                $image->move(
-                    $this->getParameter('images_directory'),
-                    $fichier
-                );
-                $img = new Image();
-                $img->setName($fichier);
-                $img->setMain(false);
-                $figure->addImage($img);
-            }
+            $this->uploadImages->Upload($images, $figure);
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
@@ -134,6 +132,11 @@ class FigureController extends AbstractController
             $figure->setDateMod(new DateTime());
 
             $em->flush();
+            //reglage de l'image principale 
+            $main = $form->get('main')->getData();
+            $figure_id = $figure->getId();
+            $this->mainImage->ChangeMainImage($figure_id, $main);
+
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
 

@@ -9,6 +9,7 @@ use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Comment;
 use App\Entity\Description;
+use App\Entity\Portrait;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -30,6 +31,10 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+        $img = new Portrait();
+        $fichier = "persona.jpg";
+        $img->setName($fichier);
+        $manager->persist($img);
 
         $admin = new User;
         $hash = $this->encoder->encodePassword($admin, "admin2021");
@@ -37,6 +42,7 @@ class AppFixtures extends Fixture
             ->setPassword($hash)
             ->SetUsername('admin2021')
             ->Setroles(['ROLE_ADMIN'])
+            ->setPortrait($img)
             ->setDate(new datetime);
         $manager->persist($admin);
 

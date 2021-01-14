@@ -7,18 +7,17 @@
 			{% endblock %}
 		</title>
 		{% block stylesheets %}
-			<!-- CSS only -->
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+			<link rel="stylesheet" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 		{% endblock %}
 	</head>
 	<body>
-		{% include "shared/_navbar.htlm.twig" %}
+		{% include "shared/_navbarbis.htlm.twig" %}
 
-		<div class="container justify-content-center"> {% block body %}{% endblock %}
-			</div>
-			{% block javascripts %}
-				<!-- JavaScript Bundle with Popper -->
-			{% endblock %}
-		</body>
-	</html>
+
+		{% block body %}{% endblock %}
+
+		{% block javascripts %}{% endblock %}
+	</body>
+</html>

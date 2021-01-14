@@ -21,7 +21,9 @@ class ImageController extends AbstractController
         $data = json_decode($request->getContent(), true);
         if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
             $name = $image->getName();
-            unlink($this->getParameter('images_directory') . '/' . $name);
+            if ($this->getParameter('images_directory') . '/' . $name) {
+                unlink($this->getParameter('images_directory') . '/' . $name);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->remove($image);
             $em->flush();

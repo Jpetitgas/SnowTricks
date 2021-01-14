@@ -23,10 +23,11 @@ class Portrait
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="portrait", cascade={"persist", "remove"})
      */
     private $user;
+
+
 
     public function getId(): ?int
     {
@@ -52,6 +53,11 @@ class Portrait
 
     public function setUser(User $user): self
     {
+        // set the owning side of the relation if necessary
+        if ($user->getPortrait() !== $this) {
+            $user->setPortrait($this);
+        }
+
         $this->user = $user;
 
         return $this;

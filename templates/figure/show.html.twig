@@ -14,15 +14,18 @@
 
 
 	{% if figure.images %}
-		<div class="row">
+		<div class="row content-around">
+
 			{% for image in figure.images %}
 				<div class="col-2">
-					<img src="\images\main\{{image.name}}" class="img-thumbnail">
+					<img src="\images\main\{{image.name}}" class="img-thumbnail" width="150">
 				</div>
 			{% endfor %}
+
 		</div>
 	{% endif %}
-	<div class="row">
+	<div class="col-6"></div>
+	<div class=" row">
 		<p class="p-3 mb-2" style="white-space:pre-line">{{figure.description}}</p>
 	</div>
 	<div class="row justify-content-around p-3 mb-2">
@@ -49,15 +52,20 @@
 		</div>
 	</div>
 	{% if app.user %}
-		<div class="row">
-			<div class="col">
+		<div class="row  align-items-center">
+			<div class="col-2">
+				<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
+			</div>
+			<div class="col-8">
 				{{ form_start(formView) }}
 
 				{{ form_widget(formView) }}
-
-				<button type="submit" class="btn btn-lg btn-primary center">Register</button>
-				{{ form_end(formView) }}
 			</div>
+			<div class="col-2">
+				<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+			</div>
+			{{ form_end(formView) }}
+
 		</div>
 	{% else %}
 		<div class="row">
@@ -70,8 +78,14 @@
 		<h2>COMMENTAIRES</h2>
 	</div>
 	{% for comment in figure.comments %}
-		<div class="row" style="white-space:pre-line">
-			<p>{{comment.content}}</p>
+		<div class="row  align-items-center" style="white-space:pre-line">
+			<div class="col-2">
+				<img src="\images\main\{{comment.writer.portrait.name}}" class="rounded-circle" width="100">
+			</div>
+			<div class="col-10">
+				<p>{{comment.content}}</p>
+			</div>
+
 		</div>
 	{% endfor %}
 {% endblock %}

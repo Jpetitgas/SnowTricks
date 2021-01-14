@@ -63,6 +63,12 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Portrait::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $portrait;
+
     public function __construct()
     {
         $this->relation = new ArrayCollection();
@@ -234,6 +240,18 @@ class User implements UserInterface
                 $comment->setWriter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPortrait(): ?Portrait
+    {
+        return $this->portrait;
+    }
+
+    public function setPortrait(Portrait $portrait): self
+    {
+        $this->portrait = $portrait;
 
         return $this;
     }

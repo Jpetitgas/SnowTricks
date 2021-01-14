@@ -2,16 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Description;
-use App\Entity\Figure;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Figure;
+use App\Entity\Description;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class FigureType extends AbstractType
 {
@@ -31,9 +34,10 @@ class FigureType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('main', RadioType::class, [
+            ->add('main', HiddenType::class, [
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+
             ]);
     }
 

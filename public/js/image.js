@@ -19,8 +19,21 @@ window.onload = () => {
                         this.parentElement.remove()
                     else
                         alert(data.error)
-                }).catche(e => alert(e))
+                }).catch(e => alert(e))
             }
+        })
+    }
+    let pictures = document.querySelectorAll("[main-picture]")
+    for (picture of pictures) {
+        picture.addEventListener("click", function (f) {
+            let cadres = document.querySelectorAll("[cadre]")
+            for (cadre of cadres) {
+                cadre.classList.value = "col";
+            }
+            var id = this.getAttribute("id")
+            document.getElementById('figure_main').value = id
+            var parent = this.parentNode.parentNode;
+            parent.classList.value = "col-2 border border-dark";
         })
     }
 }
