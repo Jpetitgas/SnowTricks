@@ -10,6 +10,7 @@ use App\Form\FigureType;
 use App\Form\CommentType;
 use App\Image\MainImage;
 use App\Image\UpLoadImages;
+use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +36,19 @@ class FigureController extends AbstractController
     /**
      * @Route("/figure/{slug}", name="figure_show", priority=-1)
      */
-    public function show($slug, Request $request, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    public function show($slug, Request $request,CommentRepository $commentRepository, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy(
             [
                 'slug' => $slug
             ]
         );
+        
+        $limit = 10;
+        $page = (int)$request->query->get("page", 1);
+        $comments = $commentRepository->getPaginationComments($figure, $page, $limit);
+        $total = $commentRepository->getTotalComment($figure);
+        
         if (!$figure) {
             $this->addFlash('danger', "Cette figure n'existe pas");
             return $this->RedirectToRoute('main');
@@ -65,6 +72,10 @@ class FigureController extends AbstractController
 
         return $this->render('figure/show.html.twig', [
             'figure' => $figure,
+            'comments' => $comments,
+            'total' =>$total,
+            'limit'=>$limit,
+            'page'=>$page,
             'formView' => $fromView
         ]);
     }
@@ -122,6 +133,8 @@ class FigureController extends AbstractController
                 'slug' => $slug
             ]
         );
+        
+        
         if (!$figure) {
             //throw $this->createNotFoundException("Cette figure n'existe pas");
             $this->addFlash('danger', "Cette figure n'existe pas");
@@ -142,7 +155,7 @@ class FigureController extends AbstractController
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
-            $figure->setDate(new DateTime());
+            //$figure->setDate(new DateTime());
             $figure->setDateMod(new DateTime());
 
             $em->flush();
@@ -157,7 +170,7 @@ class FigureController extends AbstractController
         }
 
         $fromView = $form->createView();
-
+        
         return $this->render('figure/edit.html.twig', [
             'figure' => $figure,
             'formView' => $fromView

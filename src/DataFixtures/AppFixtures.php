@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
                     ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
-                    ->setDate(new DateTime());
+                    ->setDate($faker->dateTimeBetween('-6 months'));
                 $manager->persist($figure);
                 $nb = rand(1, 2);
                 $b = rand(0, $nb);
@@ -83,7 +83,7 @@ class AppFixtures extends Fixture
 
  
 
-                for ($n = 0; $n < 5; $n++) {
+                for ($n = 0; $n < 15; $n++) {
                     $comment = new Comment();
                     $comment->setFigure($figure)
                         ->setWriter($admin)

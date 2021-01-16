@@ -19,6 +19,34 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    /**
+     * Returns all comments per pages
+     * @return void
+     */
+    public function getPaginationComments($figure, $page, $limit)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->orderBy('a.id', 'DESC')
+            ->Where('a.figure = :figure')
+            ->setParameter(':figure', $figure)
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+
+        return $query->getQuery()->getResult();
+    }
+    /**
+     * Returns number of comments
+     * @return void
+     */
+    public function getTotalComment($figure)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.figure = :figure')
+            ->setParameter(':figure', $figure)
+            ->select('COUNT(a)');
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
