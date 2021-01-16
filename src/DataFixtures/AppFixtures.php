@@ -75,7 +75,7 @@ class AppFixtures extends Fixture
                 }
                 for ($n=0; $n<4; $n++){
                     $media=new Media();
-                    $lien='<iframe  height="100" src="https://www.youtube.com/embed/UGdif-dwu-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    $lien='Q_FgVyqBY4c';
                     $media->setLien($lien);
                     $media->setFigure($figure);
                     $manager->persist($media);

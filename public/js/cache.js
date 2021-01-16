@@ -7,6 +7,7 @@ togg1.addEventListener("click", () => {
     d1.style.display = "none";
   } else {
     d1.style.display = "block";
+    togg2.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
   }
 })
 togg2.addEventListener("click", () => {
@@ -14,6 +15,7 @@ togg2.addEventListener("click", () => {
       d1.style.display = "none";
     } else {
       d1.style.display = "block";
+      togg1.scrollIntoView();
     }
   })
 

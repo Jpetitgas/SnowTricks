@@ -55,7 +55,8 @@
 
 						{% for media in figure.media %}
 							<div class="col-12" style="height=50px">
-								{{media.lien|raw}}
+								<iframe  width="150" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								
 							</div>
 						{% endfor %}
 					</div>
