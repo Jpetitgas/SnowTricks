@@ -41,11 +41,19 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             //import du fichier portrait
             $portrait = $form->get('portrait')->getData();
-            $fichier = md5(uniqid()) . '.' . $portrait->guessExtension();
+            if (!$portrait) {
+                $url = 'C:\wamp64\www\SnowTricks\public\images\illustration\default_user.jpg';
+                $fichier= md5(uniqid()) . '.jpg';
+                $file = 'C:\wamp64\www\SnowTricks\public\images\main\\'. $fichier;
+                file_put_contents($file, file_get_contents($url));
+            } else {
+                $fichier = md5(uniqid()) . '.' . $portrait->guessExtension();
             $portrait->move(
                 $this->getParameter('images_directory'),
                 $fichier
             );
+            }
+            
             $img = new Portrait();
             $img->setName($fichier);
             $entityManager->persist($img);

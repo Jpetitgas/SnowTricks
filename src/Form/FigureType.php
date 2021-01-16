@@ -34,6 +34,9 @@ class FigureType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
+           // ->add('media', TextType::class, [
+                
+            //])
             ->add('main', HiddenType::class, [
                 'mapped' => false,
                 'required' => false,

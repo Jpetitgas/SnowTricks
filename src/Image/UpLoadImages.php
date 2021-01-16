@@ -23,4 +23,16 @@ class UpLoadImages extends AbstractController
             $figure->addImage($img);
         }
     }
+    public function uploadDefault(Figure $figure)
+    {                  
+                $url = 'C:\wamp64\www\SnowTricks\public\images\illustration\default_figure.jpg';
+                $file_name= md5(uniqid()) . '.jpg';
+                $file = 'C:\wamp64\www\SnowTricks\public\images\main\\'. $file_name;
+                file_put_contents($file, file_get_contents($url));
+                $img = new Image();
+                $img->setName($file_name);
+                $img->setMain(true);
+                $figure->addImage($img);
+    }
 }
+  

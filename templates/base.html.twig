@@ -14,9 +14,18 @@
 	</head>
 	<body>
 		{% include "shared/_navbarbis.htlm.twig" %}
+		
+			{% for rubrique, messages in app.flashes %}
+				<div class="alert alert-{{rubrique}}">
+					{% for message in messages %}
+						<p>{{message}}</p>
+					{% endfor %}
 
-
-		{% block body %}{% endblock %}
+				</div>
+			{% endfor %}
+			{% block body %}{% endblock %}
+		
+		
 
 		{% block javascripts %}{% endblock %}
 	</body>

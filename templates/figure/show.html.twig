@@ -12,6 +12,21 @@
 
 {% block body %}
 	<div class="container ">
+		{% if app.user %}
+			<div class="row justify-content-end">
+				<div class="col-1">
+					<a href="{{path("figure_edit", {'slug': figure.slug}) }}">
+						<i class="fas fa-pencil-alt"></i>
+					</a>
+				</div>
+				<div class="col-1">
+					<a href="{{path("figure_delete", {'slug': figure.slug}) }}">
+						<i class="fas fa-trash-alt"></i>
+					</a>
+				</div>
+			</div>
+		{% endif %}
+
 		{% for item in figure.images %}
 			{% if item.main %}
 				<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
@@ -33,7 +48,20 @@
 				{% endif %}
 
 			</div>
-			<div class="col-6"></div>
+			<div class="col-6">
+			
+				{% if figure.images %}
+					<div class="slider">
+
+						{% for media in figure.media %}
+							<div class="col-12" style="height=50px">
+								{{media.lien|raw}}
+							</div>
+						{% endfor %}
+					</div>
+
+				{% endif %}
+			</div>
 		</div>
 
 		<div class=" row">

@@ -2,49 +2,68 @@
 
 {% block title %}accueil
 {% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('/css/imageImbriquee.css')}}">
 
+{% endblock %}
 
 {% block body %}
-	<img src="\images\main_1.jpg" class="img-fluid" alt="Responsive image">
-
-	<div class="container  pt-5">
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+	<div class="row texte-center">
+		<div  class='product-holder'>
+			<img src="\images\main_1.jpg" class="img-fluid" alt="Responsive image" class='product-image'>>
+			
+		</div>
+		
+	</div>
+	
+<div class="container">
+	
+	<div class="row justify-content-end">
+		<button id="togg1" ><i class="fa fa-chevron-down" aria-hidden="true" class='plus-image'></i></button>
+	</div>
+	<div id="d1" class="row  pt-5" style="display:none">
+	
+		<div  class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
 			{% for figure in figures %}
 				<div class="col">
 					{% include "figure/_figure_card.html.twig" %}
 				</div>
 			{% endfor %}
 		</div>
-	</div>
-	<div class="row justify-content-center">
-		{% set pages = (total/limit)| round(0, 'ceil') %}
-		<ul class="pagination">
-			<li class="{{(page==1)?'page-item disabled':''}}">
-				<a class="page-link" href="{{(page>1) ? '?page='~(page-1):''}}">
-					<i class="fas fa-angle-left"></i>
-				</a>
-			</li>
-			
-
-			{% for item in 1..pages %}
-				<li class="{{(page==item)?'page-item active':''}}">
-					<a class="page-link" href="?page={{item}}">{{item}}
+	
+		<div class="row justify-content-center">
+			{% set pages = (total/limit)| round(0, 'ceil') %}
+			<ul class="pagination">
+				<li class="{{(page==1)?'page-item disabled':''}}">
+					<a class="page-link" href="{{(page>1) ? '?page='~(page-1):''}}">
+						<i class="fas fa-angle-left"></i>
 					</a>
 				</li>
+				
 
-			{% endfor %}
-			<li class="{{(page==pages)?'page-item disabled':''}}">
-				<a class="page-link" href="{{(page<pages) ? '?page='~(page+1):''}}">
-					<i class="fas fa-angle-right"></i>
-				</a>
-			</li>
-		</ul>
+				{% for item in 1..pages %}
+					<li class="{{(page==item)?'page-item active':''}}">
+						<a class="page-link" href="?page={{item}}">{{item}}
+						</a>
+					</li>
+
+				{% endfor %}
+				<li class="{{(page==pages)?'page-item disabled':''}}">
+					<a class="page-link" href="{{(page<pages) ? '?page='~(page+1):''}}">
+						<i class="fas fa-angle-right"></i>
+					</a>
+				</li>
+			</ul>
+			
+		</div>
+		<div class="row justify-content-end">
+				<button id="togg2" ><i class="fa fa-chevron-up" aria-hidden="true" ></i></button>	
+			</div>
 	</div>
-
+</div>
 
 {% endblock %}
 {% block javascripts %}
-	<script</script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" </script> <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="{{ asset('/js/cache.js')}}"></script>
 	{% endblock %}

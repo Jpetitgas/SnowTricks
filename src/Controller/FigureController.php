@@ -43,7 +43,8 @@ class FigureController extends AbstractController
             ]
         );
         if (!$figure) {
-            throw $this->createNotFoundException("Cette figure n'existe pas");
+            $this->addFlash('danger', "Cette figure n'existe pas");
+            return $this->RedirectToRoute('main');
         }
 
         $comment = new Comment;
@@ -80,6 +81,11 @@ class FigureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $images = $form->get('images')->getData();
+
+            if (!$images) {
+                $this->uploadImages->uploadDefault($figure);
+            }
+
             $this->uploadImages->Upload($images, $figure);
 
             $figure->setWriter($user);
@@ -93,6 +99,9 @@ class FigureController extends AbstractController
             $main = $form->get('main')->getData();
             $figure_id = $figure->getId();
             $this->mainImage->ChangeMainImage($figure_id, $main);
+
+            $this->addFlash('success', "La figure a été créée");
+
             return $this->RedirectToRoute('main');
         }
 
@@ -114,7 +123,9 @@ class FigureController extends AbstractController
             ]
         );
         if (!$figure) {
-            throw $this->createNotFoundException("Cette figure n'existe pas");
+            //throw $this->createNotFoundException("Cette figure n'existe pas");
+            $this->addFlash('danger', "Cette figure n'existe pas");
+            return $this->RedirectToRoute('main');
         }
 
         $form = $this->createForm(FigureType::class, $figure);
@@ -124,6 +135,9 @@ class FigureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $images = $form->get('images')->getData();
+            if (!$images) {
+                $this->uploadImages->uploadDefault($figure);
+            }
             $this->uploadImages->Upload($images, $figure);
 
             $figure->setWriter($user);
@@ -136,6 +150,8 @@ class FigureController extends AbstractController
             $main = $form->get('main')->getData();
             $figure_id = $figure->getId();
             $this->mainImage->ChangeMainImage($figure_id, $main);
+
+            $this->addFlash('success', "La figure a été modifée");
 
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
@@ -162,7 +178,7 @@ class FigureController extends AbstractController
 
         $em->remove($figure);
         $em->flush();
-
+        $this->addFlash('success', "La figure a été supprimée");
         return $this->RedirectToRoute('main');
     }
 }

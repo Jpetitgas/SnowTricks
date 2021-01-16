@@ -9,6 +9,7 @@ use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Comment;
 use App\Entity\Description;
+use App\Entity\Media;
 use App\Entity\Portrait;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
@@ -72,8 +73,15 @@ class AppFixtures extends Fixture
                     $img->setFigure($figure);
                     $manager->persist($img);
                 }
+                for ($n=0; $n<4; $n++){
+                    $media=new Media();
+                    $lien='<iframe  height="100" src="https://www.youtube.com/embed/UGdif-dwu-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    $media->setLien($lien);
+                    $media->setFigure($figure);
+                    $manager->persist($media);
+                }
 
-
+ 
 
                 for ($n = 0; $n < 5; $n++) {
                     $comment = new Comment();
