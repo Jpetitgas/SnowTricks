@@ -2,30 +2,34 @@
 
 namespace App\Controller;
 
-use App\Entity\Portrait;
+use DateTime;
 use App\Entity\User;
+use App\Entity\Portrait;
+use App\Image\UpLoadPortrait;
+use App\Form\EditUserFormType;
+use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
-use DateTime;
+use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
     private $emailVerifier;
+    protected $uploadPortrait;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier$emailVerifier, UpLoadPortrait $uploadPortrait)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->uploadPortrait = $uploadPortrait;
     }
 
     /**
@@ -42,35 +46,18 @@ class RegistrationController extends AbstractController
             //import du fichier portrait
             $portrait = $form->get('portrait')->getData();
             if (!$portrait) {
-                $url = 'C:\wamp64\www\SnowTricks\public\images\illustration\default_user.jpg';
-                $fichier= md5(uniqid()) . '.jpg';
-                $file = 'C:\wamp64\www\SnowTricks\public\images\main\\'. $fichier;
-                file_put_contents($file, file_get_contents($url));
+                $this->uploadPortrait->uploadDefault($user);
             } else {
-                $fichier = md5(uniqid()) . '.' . $portrait->guessExtension();
-            $portrait->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
+               $this->uploadPortrait->Upload($portrait, $user); 
             }
-            
-            $img = new Portrait();
-            $img->setName($fichier);
-            $entityManager->persist($img);
-
-
-            // encode the plain password
 
             $user->setDate(new DateTime);
-            $user->setPortrait($img);
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-
-
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -113,39 +100,22 @@ class RegistrationController extends AbstractController
             throw $this->createNotFoundException("Cet utilisateur n'existe pas");
         }
 
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(EditUserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             //import du fichier portrait
             $portrait = $form->get('portrait')->getData();
-            $fichier = md5(uniqid()) . '.' . $portrait->guessExtension();
-            $portrait->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
-            $img = new Portrait();
-            $img->setName($fichier);
-            $entityManager->persist($img);
-
-
-            // encode the plain password
-
-            $user->setDate(new DateTime);
-            $user->setPortrait($img);
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            if ($portrait) {
+                $this->uploadPortrait->Upload($portrait, $user);
+            }
 
             $entityManager->flush();
             return $this->RedirectToRoute('main');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/editUser.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

@@ -29,8 +29,7 @@ class CommentRepository extends ServiceEntityRepository
             ->orderBy('a.id', 'DESC')
             ->Where('a.figure = :figure')
             ->setParameter(':figure', $figure)
-            ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit);
+            ->setMaxResults($page * $limit);
 
         return $query->getQuery()->getResult();
     }

@@ -22,20 +22,19 @@
 					<a class="nav-link" href="{{ path ('edit_user', {'id': app.user.id})}}">
 						<font style="vertical-align: inherit;">
 							<font style="vertical-align: inherit;">
-								<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" height="40"></font>
-						</font>
-					</a>
-				</li>
+								<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" height="40">
+							</font>
+						</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path ('app_register')}}">Créer un compte</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path ('app_login')}}">Se connecter</a>
+					</li>
+				{% endif %}
+			</ul>
 
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path ('app_register')}}">Créer un compte</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path ('app_login')}}">Se connecter</a>
-				</li>
-			{% endif %}
-		</ul>
-
-	</div>
-</nav>
+		</div>
+	</nav>

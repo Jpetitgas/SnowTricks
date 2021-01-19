@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
             $description = new Description;
             $description->setDescription($value);
             $manager->persist($description);
-            for ($p = 0; $p < 3; $p++) {
+            for ($p = 0; $p < 7; $p++) {
                 $figure = new Figure();
 
                 $figure->setName($faker->words(2, true))

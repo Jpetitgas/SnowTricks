@@ -3,20 +3,21 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Comment;
-use App\Entity\Image;
 use App\Form\FigureType;
-use App\Form\CommentType;
 use App\Image\MainImage;
+use App\Form\CommentType;
 use App\Image\UpLoadImages;
-use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -44,7 +45,7 @@ class FigureController extends AbstractController
             ]
         );
         
-        $limit = 10;
+        $limit = 5;
         $page = (int)$request->query->get("page", 1);
         $comments = $commentRepository->getPaginationComments($figure, $page, $limit);
         $total = $commentRepository->getTotalComment($figure);
@@ -67,15 +68,19 @@ class FigureController extends AbstractController
             $em->flush();
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
-
+        $page++;
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'contenu' => $this->renderView('figure/_comment.html.twig', compact('comments')),
+                'page' => $page
+            ]);
+        }
+        
         $fromView = $form->createView();
 
         return $this->render('figure/show.html.twig', [
             'figure' => $figure,
             'comments' => $comments,
-            'total' =>$total,
-            'limit'=>$limit,
-            'page'=>$page,
             'formView' => $fromView
         ]);
     }
@@ -95,9 +100,7 @@ class FigureController extends AbstractController
 
             if (!$images) {
                 $this->uploadImages->uploadDefault($figure);
-            }
-
-            $this->uploadImages->Upload($images, $figure);
+            } else {$this->uploadImages->Upload($images, $figure);}
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
@@ -148,11 +151,10 @@ class FigureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $images = $form->get('images')->getData();
-            if (!$images) {
-                $this->uploadImages->uploadDefault($figure);
+            if ($images) {
+                $this->uploadImages->Upload($images, $figure);
             }
-            $this->uploadImages->Upload($images, $figure);
-
+            
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
             //$figure->setDate(new DateTime());

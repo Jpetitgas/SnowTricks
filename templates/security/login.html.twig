@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!
+{% block title %}Connexion
 {% endblock %}
-
 {% block body %}
 
 	<div class="row text-center" style="width: 400px; margin-left: auto; margin-right: auto">
@@ -13,38 +12,30 @@
 
 			{% if app.user %}
 				<div class="mb-3">
-					You are logged in as
+					Vous etes connecté en tant que
 					{{ app.user.username }},
-					<a href="{{ path('app_logout') }}">Logout</a>
+					<a href="{{ path('app_logout') }}">Déconnexion</a>
 				</div>
 			{% endif %}
 
-			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
+			<h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
 			<div class="col border border-dark p-3">
 				<div class="mb-1">
-					<label for="inputUsername">Username</label>
+					<label for="inputUsername">Nom de l'utilisateur</label>
 					<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
 				</div>
 				<div class="mb-1">
-					<label for="inputPassword">Password</label>
+					<label for="inputPassword">Mot de passe</label>
 					<input type="password" name="password" id="inputPassword" class="form-control" required>
 				</div>
 				<input
 				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-				{# <div class="checkbox mb-3">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						<label>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							<input type="checkbox" name="_remember_me">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							Remember me
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</label>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		</div> #}
-
-
 				<div class="mb-3">
-					<a href="{{ path('app_forgot_password_request') }}">Forgot Password</a>
+					<a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié?</a>
 				</div>
 				<button class="btn btn-lg btn-primary center" type="submit">
-					Sign in
+					Se connecter
 				</button>
 			</div>
 		</form>
