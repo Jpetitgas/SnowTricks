@@ -6,37 +6,39 @@
 {% endblock %}
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('/css/show.css')}}">
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous"/>
 {% endblock %}
 
 {% block body %}
-	<div id="image" class="container ">
+	<div class="container ">
+		<div id="image">
 
-		{% if app.user %}
-			<div class="row justify-content-end">
-				<div class="col-1">
+			{% for item in figure.images %}
+				{% if item.main %}
+					<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+				{% endif %}
+			{% endfor %}
+
+			{% if app.user %}
+				<div class="icon">
 					<a href="{{path("figure_edit", {'slug': figure.slug}) }}">
 						<i class="fas fa-pencil-alt"></i>
 					</a>
-				</div>
-				<div class="col-1">
 					<a href="{{path("figure_delete", {'slug': figure.slug}) }}">
 						<i class="fas fa-trash-alt"></i>
 					</a>
 				</div>
-			</div>
-		{% endif %}
-		{% for item in figure.images %}
-			{% if item.main %}
-				<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
 			{% endif %}
-		{% endfor %}
+		</div>
+
+
 		<div class="row">
 			<div class="col-6">
 				{% if figure.images %}
 					<div class="slider">
-
 						{% for image in figure.images %}
 							<div class="col-12">
 								<img src="\images\main\{{image.name}}" class="img-thumbnail">
@@ -83,33 +85,36 @@
 				</h4>
 			</div>
 		</div>
-		{% if app.user %}
-			<div class="row  align-items-center">
-				<div class="col-2">
-					<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
-				</div>
-				<div class="col-8">
-					{{ form_start(formView) }}
+		<div>
+			{% if app.user %}
+				<div class="row  align-items-center">
+					<div class="col-2">
+						<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
+					</div>
+					<div class="col-8">
+						{{ form_start(formView) }}
 
-					{{ form_widget(formView) }}
-				</div>
-				<div class="col-2">
-					<button type="submit" class="btn btn-lg btn-primary center">Register</button>
-				</div>
-				{{ form_end(formView) }}
+						{{ form_widget(formView) }}
+					</div>
+					<div class="col-2">
+						<button type="submit" class="btn btn-lg btn-primary center">Register</button>
+					</div>
+					{{ form_end(formView) }}
 
-			</div>
-		{% else %}
-			<div class="row">
-				<h5>Vous devez etre connecté pour laisser un commentaire:
-					<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
-				</h5>
-			</div>
-		{% endif %}
+				</div>
+			{% else %}
+				<div class="row">
+					<h5>Vous devez etre connecté pour laisser un commentaire:
+						<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
+					</h5>
+				</div>
+			{% endif %}
+		</div>
+
 		<div class="row justify-content-around p-3 mb-2">
 			<h2>COMMENTAIRES</h2>
 		</div>
-		<div id='comment'>
+		<div id='commentaire'>
 			{% include "figure/_comment.html.twig"%}
 		</div>
 		<div class="row justify-content-end">
@@ -118,7 +123,8 @@
 			</button>
 		</div>
 
-		<div id="page">2</div>
+		<div id="page" style="display: none">2</div>
+
 		<div class="row justify-content-center">
 			<button id="plus">+ de commentaires</button>
 		</div>

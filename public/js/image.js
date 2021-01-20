@@ -16,7 +16,7 @@ window.onload = () => {
                     response => response.json()
                 ).then(data => {
                     if (data.success)
-                        this.parentElement.remove()
+                        this.parentElement.parentElement.parentElement.remove()
                     else
                         alert(data.error)
                 }).catch(e => alert(e))
@@ -26,14 +26,19 @@ window.onload = () => {
     let pictures = document.querySelectorAll("[main-picture]")
     for (picture of pictures) {
         picture.addEventListener("click", function (f) {
-            let cadres = document.querySelectorAll("[cadre]")
-            for (cadre of cadres) {
-                cadre.classList.value = "col";
+            let checks = document.querySelectorAll("[check]")
+            for (check of checks) {
+                
+                if (check.getAttribute("image") == this.getAttribute("image")){
+                    check.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i>';
+                } else {
+                    check.innerHTML = "";
+                }               
             }
+            
             var id = this.getAttribute("id")
             document.getElementById('figure_main').value = id
-            var parent = this.parentNode.parentNode;
-            parent.classList.value = "col-2 border border-dark";
+            
         })
     }
 }

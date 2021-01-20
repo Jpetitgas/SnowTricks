@@ -7,25 +7,23 @@
 			{% endblock %}
 		</title>
 		{% block stylesheets %}
-
 			<link rel="stylesheet" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 		{% endblock %}
 	</head>
 	<body>
 		{% include "shared/_navbarbis.htlm.twig" %}
-		
-			{% for rubrique, messages in app.flashes %}
-				<div class="alert alert-{{rubrique}}">
-					{% for message in messages %}
-						<p>{{message}}</p>
-					{% endfor %}
 
-				</div>
-			{% endfor %}
-			{% block body %}{% endblock %}
-		
-		
+		{% for rubrique, messages in app.flashes %}
+			<div class="alert alert-{{rubrique}}">
+				{% for message in messages %}
+					<p>{{message}}</p>
+				{% endfor %}
+
+			</div>
+		{% endfor %}
+		{% block body %}{% endblock %}
+
 
 		{% block javascripts %}{% endblock %}
 	</body>

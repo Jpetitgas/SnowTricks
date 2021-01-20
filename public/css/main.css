@@ -1,0 +1,14 @@
+.product-holder {
+    position: relative;
+}
+
+.down {
+    position: absolute;
+    right: 50px;
+    bottom: 250px;
+}
+
+#togg2 {
+    position: absolute;
+    right: 20px;
+}

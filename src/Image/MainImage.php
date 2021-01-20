@@ -20,24 +20,17 @@ class MainImage
         $this->em = $em;
     }
 
-    public function ChangeMainImage($figure_id, $id)
+    public function ChangeMainImage($figure_id, $newMainImage)
     {
         $figure = $this->figureRepository->findOneBy(['id' => $figure_id]);
         $images = $this->imageRepository->findBy(['figure' => $figure]);
-        $cpt = 0;
-        foreach ($images as $image) {
-            if ($id) {
-                if ($image->getId() == $id) {
-                    $image->setMain(TRUE);
-                } else $image->setMain(FALSE);
-            } else {
-                if ($cpt == 0) {
-                    $image->setMain(TRUE);
-                } else  $image->setMain(FALSE);
+
+        if ($newMainImage) {
+            foreach ($images as $image) {
+                $image->setMain($image->getId() == $newMainImage);
             }
-            $cpt++;
+            $this->em->flush();
         }
-        $this->em->flush();
         return true;
     }
 }

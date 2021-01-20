@@ -4,43 +4,105 @@
 
 {% block title %}edition
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous"/>
+{% endblock %}
+
 
 {% block body %}
 	<div class="container">
-		<h1>Modification de la figure</h1>
+		<div class="row justify-content-around p-3 mb-2">
+			<h1>Modification de la figure</h1>
+		</div>
+		<div id="image">
+			{% for item in figure.images %}
+				{% if item.main %}
+					<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div class="row">
+			<div class="col-6">
+				{% if figure.images %}
+					<div class="slider">
+						{% for image in figure.images %}
+							<div class="col-12 {{image.name}}">
+								<div class="row">
+									<a href="#" main-picture image="{{image.name}}" id="{{image.id}}">
+										<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail" width="150">
+									</a>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										{% if image.main %}
+											<div check image="{{image.name}}">
+
+												<i class="fa fa-check" aria-hidden="true"></i>
+											</div>
+										{% else %}
+											<div check image="{{image.name}}"></div>
+										{% endif %}
+									</div>
+									<div class="col-6">
+										<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
+											<i class="fas fa-trash-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+			<div class="col-6">video</div>
+		</div>
+
 		<div class="row">
 			<div class="col">
 				{{ form_start(formView) }}
 
-				{{ form_widget(formView.name) }}
-				{{ form_widget(formView.description) }}
-				{{ form_widget(formView.type) }}
-				{{ form_widget(formView.images) }}
-
-				<h3>Image(s) liée(s) à cette figure</h3>
-				<div class="row ">
-
-					{% for image in figure.images %}
-						<div class="col-2  {{image.main ? 'border border-dark' }}" cadre>
-							<div class="row">
-								<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail" width="150">
-							</div>
-							<div class="row">
-								<button id="{{image.id}}" type="button" class="btn btn-primary" main-picture>A la une</button>
-							</button>
-						</div>
-						<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
-							<i class="fas fa-trash-alt"></i>
-						</a>
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(formView.name) }}
 					</div>
-				{% endfor %}
+					<div class="col-6">
+						{{ form_row(formView.type) }}
+
+					</div>
+				</div>
+
+				{{ form_row(formView.description) }}
+
+
+				{{ form_row(formView.images) }}
+
+				{{ form_widget(formView.main) }}
+				<div class="row justify-content-around p-3 mb-2">
+
+					<div class="col-6">
+						<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
+
+					</div>
+
+					<div class="col-6">
+<a href="{{path("figure_delete", {'slug': figure.slug}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
+
+					</div>
+				</div>
+				{{ form_end(formView) }}
+
+
 			</div>
-			{{ form_widget(formView.main) }}
-			<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
-			{{ form_end(formView) }}
 		</div>
-	</div>
-{% endblock %}
-{% block javascripts %}
-	<script src="{{ asset('/js/image.js')}}"></script>
-{% endblock %}
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{ asset('/js/image.js')}}"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			$('.slider').slick({infinite: true, slidesToShow: 3, slidesToScroll: 3});
+		</script>
+
+	{% endblock %}

@@ -162,9 +162,9 @@ class FigureController extends AbstractController
 
             $em->flush();
             //reglage de l'image principale 
-            $main = $form->get('main')->getData();
+            $newMainImage = $form->get('main')->getData();
             $figure_id = $figure->getId();
-            $this->mainImage->ChangeMainImage($figure_id, $main);
+            $this->mainImage->ChangeMainImage($figure_id, $newMainImage);
 
             $this->addFlash('success', "La figure a été modifée");
 

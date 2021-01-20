@@ -12,7 +12,7 @@ plus.addEventListener("click", ()=>{
   }).then(response=>
     response.json()
   ).then(data=>{
-    document.querySelector("#comment").innerHTML = data.contenu;
+    document.querySelector("#commentaire").innerHTML = data.contenu;
     document.querySelector("#page").innerHTML = data.page;
     
   }).catch(e=>alert(e))

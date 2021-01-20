@@ -19,7 +19,8 @@
 					</a>
 				</div>
 				<div class="col-2">
-					<a href="{{path("figure_delete", {'slug': figure.slug}) }}">
+<a href="{{path("figure_delete", {'slug': figure.slug}) }}" onclick=" return confirm('etes-vous sûr de vouloir supprimer cette figure?')">
+
 						<i class="fas fa-trash-alt"></i>
 					</a>
 				</div>

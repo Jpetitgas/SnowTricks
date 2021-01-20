@@ -15,21 +15,27 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class FigureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
+            ->add('name',TextType::class,[
+                'label'=>'Nom'
+            ])
+            ->add('description', TextareaType::class, [
+            'attr' => ['rows' => '15'],
+            ])
             ->add('type', EntityType::class, [
+                'label' => 'Groupes',
                 'class' => Description::class,
                 'choice_label' => 'description'
 
             ])
             ->add('images', FileType::class, [
-                'label' => false,
+                'label' => 'Image(s)',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false
@@ -39,9 +45,10 @@ class FigureType extends AbstractType
             //])
             ->add('main', HiddenType::class, [
                 'mapped' => false,
-                'required' => false,
+               'required' => false,
 
-            ]);
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
