@@ -58,6 +58,9 @@
 			</div>
 			<div class="col-6">video</div>
 		</div>
+		<div id='loader' style='display: none'>
+			<i class="fas fa-spinner fa-pulse"></i>
+		</div>
 
 		<div class="row">
 			<div class="col">
@@ -83,12 +86,10 @@
 
 					<div class="col-6">
 						<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
-
 					</div>
 
 					<div class="col-6">
-<a href="{{path("figure_delete", {'slug': figure.slug}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
-
+						<a href="{{path("figure_delete", {'slug': figure.slug}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
 					</div>
 				</div>
 				{{ form_end(formView) }}

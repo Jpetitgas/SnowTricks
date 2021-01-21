@@ -5,6 +5,7 @@ window.onload = () => {
         link.addEventListener("click", function (e) {
             e.preventDefault()
             if (confirm("Voulez-vous vraiment supprimer cette image?")) {
+                document.getElementById("loader").setAttribute("style", "display:block");
                 fetch(this.getAttribute("href"), {
                     method: "DELETE",
                     headers: {
@@ -15,12 +16,16 @@ window.onload = () => {
                 }).then(
                     response => response.json()
                 ).then(data => {
+                    document.getElementById("loader").setAttribute("style", "display:none");
                     if (data.success)
                         this.parentElement.parentElement.parentElement.remove()
+
                     else
                         alert(data.error)
                 }).catch(e => alert(e))
+                
             }
+            
         })
     }
     let pictures = document.querySelectorAll("[main-picture]")

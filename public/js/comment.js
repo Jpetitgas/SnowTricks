@@ -4,7 +4,7 @@ window.onload=()=>{
 plus.addEventListener("click", ()=>{
   const page = document.getElementById("page").innerText;
   const Url=new URL(window.location.href);
-  
+  document.getElementById("loader").setAttribute("style", "display:block");
   fetch(Url.pathname +"?page="+ page +"&ajax=1", {
     headers: {
       "X-Requested-with": "XMLHttpRequest"
@@ -14,7 +14,7 @@ plus.addEventListener("click", ()=>{
   ).then(data=>{
     document.querySelector("#commentaire").innerHTML = data.contenu;
     document.querySelector("#page").innerHTML = data.page;
-    
+    document.getElementById("loader").setAttribute("style", "display:none");
   }).catch(e=>alert(e))
 });
   document.getElementById("togg2").addEventListener("click", () => {
