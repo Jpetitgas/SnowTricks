@@ -74,7 +74,7 @@ class FigureController extends AbstractController
         $page++;
         if ($request->get('ajax')) {
             return new JsonResponse([
-                'contenu' => $this->renderView('figure/_comment.html.twig', compact('comments')),
+                'contenu' => $this->renderView('figure/_commentaires.html.twig', compact('comments')),
                 'page' => $page
             ]);
         }
