@@ -16,17 +16,18 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class FigureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name',TextType::class,[
-                'label'=>'Nom'
+            ->add('name', TextType::class, [
+                'label' => 'Nom'
             ])
             ->add('description', TextareaType::class, [
-            'attr' => ['rows' => '15'],
+                'attr' => ['rows' => '15'],
             ])
             ->add('type', EntityType::class, [
                 'label' => 'Groupes',
@@ -40,15 +41,17 @@ class FigureType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-           // ->add('media', TextType::class, [
-                
-            //])
-            ->add('main', HiddenType::class, [
+            ->add('media', UrlType::class, [
                 'mapped' => false,
-               'required' => false,
+                'required' => false,
 
             ])
-            ;
+            ->add('main', HiddenType::class, [
+                'label' => 'video(s)',
+                'mapped' => false,
+                'required' => false,
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

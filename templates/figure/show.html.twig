@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container ">
+	<div class="container">
 		<div id="image">
 
 			{% for item in figure.images %}
@@ -34,30 +34,14 @@
 			{% endif %}
 		</div>
 
-
-		<div class="row">
-			<div class="col-6">
-				{% if figure.images %}
-					<div class="slider">
-						{% for image in figure.images %}
-							<div class="col-12">
-								<img src="\images\main\{{image.name}}" class="img-thumbnail">
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
-			<div class="col-6">
-				{% if figure.images %}
-					<div class="slider">
-						{% for media in figure.media %}
-							<div class="col-12" style="height=50px">
-								<iframe width="150" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
+		<div class="row" id="large">
+			{% include "figure/_mediasH.html.twig"%}
+		</div>
+		<div class="row" id="under">
+			<button>Voir les medias</button>
+		</div>
+		<div id="medias" class="row" style='display: none'>
+			{% include "figure/_mediasV.html.twig"%}
 		</div>
 		<div class=" row">
 			<p class="p-3 mb-2 text-justify" style="white-space:pre-line">{{figure.description}}</p>
@@ -86,36 +70,14 @@
 			</div>
 		</div>
 		<div>
-			{% if app.user %}
-				<div class="row  align-items-center">
-					<div class="col-2">
-						<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" width="100">
-					</div>
-					<div class="col-8">
-						{{ form_start(formView) }}
-
-						{{ form_widget(formView) }}
-					</div>
-					<div class="col-2">
-						<button type="submit" class="btn btn-lg btn-primary center">Register</button>
-					</div>
-					{{ form_end(formView) }}
-
-				</div>
-			{% else %}
-				<div class="row">
-					<h5>Vous devez etre connecté pour laisser un commentaire:
-						<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
-					</h5>
-				</div>
-			{% endif %}
+			{% include "figure/_commentaire.html.twig"%}
 		</div>
 
 		<div class="row justify-content-around p-3 mb-2">
 			<h2>COMMENTAIRES</h2>
 		</div>
 		<div id='commentaire'>
-			{% include "figure/_comment.html.twig"%}
+			{% include "figure/_commentaires.html.twig"%}
 		</div>
 		<div class="row justify-content-end">
 			<button id="togg2">
@@ -135,7 +97,7 @@
 
 	</div>
 </div>{% endblock %}{% block javascripts %}
-<script src="{{ asset('/js/comment.js')}}"></script>
+<script src="{{ asset('/js/show.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous"></script>
 <script type="text/javascript">

@@ -38,7 +38,6 @@
 									<div class="col-6">
 										{% if image.main %}
 											<div check image="{{image.name}}">
-
 												<i class="fa fa-check" aria-hidden="true"></i>
 											</div>
 										{% else %}
@@ -56,7 +55,26 @@
 					</div>
 				{% endif %}
 			</div>
-			<div class="col-6">video</div>
+			<div class="col-6">
+				{% if figure.media %}
+					<div class="slider">
+						{% for media in figure.media %}
+							<div class="col-12 {{media.lien}} style=" height="50px">
+								<div class="row">
+									<iframe width="150" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</div>
+								<div class="row">
+									<a href="{{path('figure_delete_media',{id: media.id})}}" data-delete data-token="{{csrf_token('delete'~ media.id)}}">
+										<i class="fas fa-trash-alt"></i>
+									</a>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+
+				{% endif %}
+
+			</div>
 		</div>
 		<div id='loader' style='display: none'>
 			<i class="fas fa-spinner fa-pulse"></i>
@@ -78,11 +96,17 @@
 
 				{{ form_row(formView.description) }}
 
-
-				{{ form_row(formView.images) }}
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(formView.images) }}
+					</div>
+					<div class="col-6">
+						{{ form_row(formView.media) }}
+					</div>
+				</div>
 
 				{{ form_widget(formView.main) }}
-				<div class="row justify-content-around p-3 mb-2">
+				<div class="row justify-content-center p-3 mb-2">
 
 					<div class="col-6">
 						<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>

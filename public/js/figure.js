@@ -19,10 +19,10 @@ plus.addEventListener("click", ()=>{
 });
 
   document.getElementById("togg1").addEventListener("click", () => {
-  document.getElementById("togg2").scrollIntoView({behavior: "smooth", block: "start", inline: "center"});
+    document.getElementById("content").scrollIntoView({ behavior: "smooth", block: "start", inline: "start"});
  
 })
   document.getElementById("togg2").addEventListener("click", () => {
-    document.getElementById("image").scrollIntoView({ behavior: "smooth", block: "start", inline: "center" });
+    document.getElementById("content").scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
   })
 }

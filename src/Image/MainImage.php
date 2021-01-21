@@ -2,6 +2,8 @@
 
 namespace App\Image;
 
+
+use App\Entity\Figure;
 use App\Repository\ImageRepository;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,10 +13,12 @@ class MainImage
 {
     protected $imageRepository;
     protected $figureRepository;
+    
     protected $em;
 
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $em, FigureRepository $figureRepository)
+    public function __construct( ImageRepository $imageRepository, EntityManagerInterface $em, FigureRepository $figureRepository)
     {
+        
         $this->imageRepository = $imageRepository;
         $this->figureRepository = $figureRepository;
         $this->em = $em;
@@ -31,6 +35,16 @@ class MainImage
             }
             $this->em->flush();
         }
+        return true;
+    }
+    
+   
+    public function mainImageNewFigure($figure)
+    {
+        $allImage = $this->imageRepository->findBy(['figure' => $figure]);
+        $newMainImage = $allImage[0];
+        $newMainImage->setmain(TRUE);
+        $this->em->flush();
         return true;
     }
 }

@@ -10,6 +10,7 @@ use App\Form\FigureType;
 use App\Image\MainImage;
 use App\Form\CommentType;
 use App\Image\UpLoadImages;
+use App\Media\AddMedia;
 use App\Repository\FigureRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,10 +26,12 @@ class FigureController extends AbstractController
 {
     protected $mainImage;
     protected $uploadImages;
+    protected $addMedia;
 
 
-    public function __construct(MainImage $mainImage, UpLoadImages $upLoadImages)
+    public function __construct(MainImage $mainImage, UpLoadImages $upLoadImages, AddMedia $addMedia)
     {
+        $this->addMedia= $addMedia;
         $this->mainImage = $mainImage;
         $this->uploadImages = $upLoadImages;
     }
@@ -101,6 +104,11 @@ class FigureController extends AbstractController
             if (!$images) {
                 $this->uploadImages->uploadDefault($figure);
             } else {$this->uploadImages->Upload($images, $figure);}
+           
+            $media = $form->get('media')->getData();
+            if ($media){
+                $this->addMedia->addUrl($media, $figure);
+            }
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
@@ -109,10 +117,8 @@ class FigureController extends AbstractController
             $em->persist($figure);
             $em->flush();
 
-            //reglage de l'image principale 
-            $main = $form->get('main')->getData();
-            $figure_id = $figure->getId();
-            $this->mainImage->ChangeMainImage($figure_id, $main);
+            //Mise à la une de la premier image
+            $this->mainImage->mainImageNewFigure($figure);
 
             $this->addFlash('success', "La figure a été créée");
 
@@ -154,7 +160,13 @@ class FigureController extends AbstractController
             if ($images) {
                 $this->uploadImages->Upload($images, $figure);
             }
-            
+
+            $media = $form->get('media')->getData();
+            if ($media) {
+                $this->addMedia->addUrl($media, $figure);
+            }
+
+
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
             //$figure->setDate(new DateTime());

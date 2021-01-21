@@ -8,3 +8,30 @@
     top: 10px;
 }
 
+@media (max-width :990px) {
+    #large {
+        display: none;
+    }
+    #under {
+        display: block;
+        text-align: center;
+        padding-top: 15px;
+    }
+    #portrait {
+        max-width: 50px;
+    }
+}
+
+@media (min-width :990px) {
+    #under {
+        display: none;
+    }
+    #portrait {
+        max-width: 100px;
+    }
+}
+
+#close {
+    text-align: center;
+    padding-top: 15px;
+}
