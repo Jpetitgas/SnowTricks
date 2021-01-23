@@ -9,6 +9,8 @@
 {% endblock %}
 
 {% block body %}
+
+	{# Image principale de #}
 	<div id="image" class="row texte-center">
 		<div class='product-holder'>
 			<div class='product-image'>
@@ -19,15 +21,20 @@
 			</div>
 		</div>
 	</div>
+
+	{# affichage des cards des figures #}
 	<div id="content" class="container">
 		{% include "main/_content.html.twig"%}
 	</div>
 </div>
+{# bouton de remonté #}
 <div class="row up">
 	<button id="togg2">
 		<i class="fa fa-chevron-up" aria-hidden="true"></i>
 	</button>
 </div>
+
+{# bouton pour obtenir plus de figures#}
 <div id="page" style="display: none">2</div>
 
 <div class="row justify-content-center">

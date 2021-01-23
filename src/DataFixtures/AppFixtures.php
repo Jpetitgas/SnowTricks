@@ -75,7 +75,7 @@ class AppFixtures extends Fixture
                 }
                 for ($n=0; $n<4; $n++){
                     $media=new Media();
-                    $lien= '8CtWgw9xYRE';
+                    $lien= '5K3VXw9ywp8';
                     $media->setLien($lien);
                     $media->setFigure($figure);
                     $manager->persist($media);

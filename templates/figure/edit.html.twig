@@ -6,6 +6,8 @@
 {% endblock %}
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('/css/figure.css')}}">
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous"/>
 {% endblock %}
@@ -16,6 +18,8 @@
 		<div class="row justify-content-around p-3 mb-2">
 			<h1>Modification de la figure</h1>
 		</div>
+
+		{# image mise en avant pour la figure #}
 		<div id="image">
 			{% for item in figure.images %}
 				{% if item.main %}
@@ -23,59 +27,22 @@
 				{% endif %}
 			{% endfor %}
 		</div>
-		<div class="row">
-			<div class="col-6">
-				{% if figure.images %}
-					<div class="slider">
-						{% for image in figure.images %}
-							<div class="col-12 {{image.name}}">
-								<div class="row">
-									<a href="#" main-picture image="{{image.name}}" id="{{image.id}}">
-										<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail" width="150">
-									</a>
-								</div>
-								<div class="row">
-									<div class="col-6">
-										{% if image.main %}
-											<div check image="{{image.name}}">
-												<i class="fa fa-check" aria-hidden="true"></i>
-											</div>
-										{% else %}
-											<div check image="{{image.name}}"></div>
-										{% endif %}
-									</div>
-									<div class="col-6">
-										<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
-											<i class="fas fa-trash-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
-			<div class="col-6">
-				{% if figure.media %}
-					<div class="slider">
-						{% for media in figure.media %}
-							<div class="col-12 {{media.lien}} style=" height="50px">
-								<div class="row">
-									<iframe width="150" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-								</div>
-								<div class="row">
-									<a href="{{path('figure_delete_media',{id: media.id})}}" data-delete data-token="{{csrf_token('delete'~ media.id)}}">
-										<i class="fas fa-trash-alt"></i>
-									</a>
-								</div>
-							</div>
-						{% endfor %}
-					</div>
 
-				{% endif %}
-
-			</div>
+		{# affichage des medias ecran large #}
+		<div class="row" id="large">
+			{% include "figure/_editMediasH.html.twig"%}
 		</div>
+
+		{#affichage des medias ecran small #}
+		<div class="row small" id="under">
+			<button>Voir les medias</button>
+		</div>
+		<div id="medias" class="row small">
+
+			{% include "figure/_editMediasV.html.twig"%}
+		</div>
+
+
 		<div id='loader' style='display: none'>
 			<i class="fas fa-spinner fa-pulse"></i>
 		</div>
@@ -106,7 +73,7 @@
 				</div>
 
 				{{ form_widget(formView.main) }}
-				<div class="row justify-content-center p-3 mb-2">
+				<div class="d-flex justify-content-center">
 
 					<div class="col-6">
 						<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>

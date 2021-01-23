@@ -42,12 +42,12 @@ class FigureType extends AbstractType
                 'required' => false
             ])
             ->add('media', UrlType::class, [
+                'label' => 'video (ex: https://youtu.be/SDdfIqJLrq4)',
                 'mapped' => false,
                 'required' => false,
 
             ])
             ->add('main', HiddenType::class, [
-                'label' => 'video(s)',
                 'mapped' => false,
                 'required' => false,
 

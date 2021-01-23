@@ -1,0 +1,54 @@
+<div class="justify-content-center">
+
+	{% if figure.images %}
+		<div>
+			{% for image in figure.images %}
+				<div class="col-12 {{image.name}}">
+					<div class="row">
+						<a href="#" main-picture image="{{image.name}}" id="{{image.id}}">
+							<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail">
+						</a>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							{% if image.main %}
+								<div check image="{{image.name}}">
+									<i class="fa fa-check" aria-hidden="true"></i>
+								</div>
+							{% else %}
+								<div check image="{{image.name}}"></div>
+							{% endif %}
+						</div>
+						<div class="col-6">
+							<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
+								<i class="fas fa-trash-alt"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+</div>
+<div class="d-flex justify-content-center">
+
+	{% if figure.media %}
+		<div>
+			{% for media in figure.media %}
+				<div id="{{'V'~media.lien}}">
+					<div class="row">
+						<iframe width="540" height="300" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+					<div class="row">
+						<a href="{{path('figure_delete_media',{id: media.id})}}" ref="{{'V'~media.lien}}" data-delete data-token="{{csrf_token('delete'~ media.id)}}">
+							<i class="fas fa-trash-alt"></i>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+</div>
+<div class="d-flex justify-content-center" id="close">
+	<button>fermer les medias</button>
+</div>

@@ -1,0 +1,20 @@
+@media (max-width :990px) {
+    #navbarlarge {
+        display: none;
+    }
+    #navbarsmall {
+        display: block;
+        position: fixed;
+        bottom: 0px;
+        z-index: 100;
+        width: 100%;;
+    }
+}
+
+@media (min-width :990px) {
+    #navbarlarge {
+        display: block;
+    }
+    #navbarsmall {
+        display: none;
+    }

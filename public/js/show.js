@@ -21,9 +21,9 @@ window.onload = () => {
     document.getElementById("image").scrollIntoView({ behavior: "smooth", block: "start", inline: "center" });
   })
   document.getElementById("under").addEventListener("click", () => {
-    document.getElementById("medias").setAttribute("style", "display:block")
+    document.getElementById("medias").style.display = "block"; 
   })
   document.getElementById("close").addEventListener("click", () => {
-    document.getElementById("medias").setAttribute("style", "display:none")
+    document.getElementById("medias").style.display = "none"; 
   })
 }
