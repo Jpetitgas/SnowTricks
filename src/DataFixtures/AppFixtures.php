@@ -21,9 +21,11 @@ class AppFixtures extends Fixture
 {
     protected $encoder;
     protected $slugger;
+    protected $userRepository;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, SluggerInterface $slugger)
+    public function __construct(UserPasswordEncoderInterface $encoder, SluggerInterface $slugger, UserRepository $userRepository )
     {
+        $this->userRepository= $userRepository;
         $this->encoder = $encoder;
         $this->slugger = $slugger;
     }
@@ -31,24 +33,28 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
-
-        $img = new Portrait();
-        $fichier = "persona.jpg";
-        $img->setName($fichier);
-        $manager->persist($img);
-
-        $admin = new User;
-        $hash = $this->encoder->encodePassword($admin, "admin2021");
-        $admin->setemail('admin@gmail.com')
-            ->setPassword($hash)
-            ->SetUsername('admin2021')
-            ->Setroles(['ROLE_ADMIN'])
-            ->setPortrait($img)
-            ->setDate(new datetime);
-        $manager->persist($admin);
-
-
+        $videos = array('0uGETVnkujA', '6cisNRS35gA', 'qsd8uaex-Is', 'h70kgLV2_Vg', '5K3VXw9ywp8');
         $style = array('grabs', 'rotations', 'flips', 'rotations désaxées', 'slides', 'one foot tricks', 'Old school');
+
+        for ($n = 0; $n < 4; $n++) {
+            $img = new Portrait();
+            $fichier = 'persona_'. $n.'.jpg';
+            $img->setName($fichier);
+            $manager->persist($img);
+
+            $admin = new User;
+            $hash = $this->encoder->encodePassword($admin, "admin2021");
+            $admin->setemail('admin'.$n.'@gmail.com')
+                ->setPassword($hash)
+                ->SetUsername('admin202'.$n)
+                ->Setroles(['ROLE_ADMIN'])
+                ->setPortrait($img)
+                ->setDate(new datetime);
+            $manager->persist($admin);
+        }
+        $manager->flush();
+        $user=$this->userRepository->findAll();
+        
         foreach ($style as $key => $value) {
             $description = new Description;
             $description->setDescription($value);
@@ -57,7 +63,7 @@ class AppFixtures extends Fixture
                 $figure = new Figure();
 
                 $figure->setName($faker->words(2, true))
-                    ->setWriter($admin)
+                    ->setWriter($user[rand(0, 3)])
                     ->setDescription($faker->paragraphs(5, true))
                     ->setType($description)
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
@@ -73,20 +79,17 @@ class AppFixtures extends Fixture
                     $img->setFigure($figure);
                     $manager->persist($img);
                 }
-                for ($n=0; $n<4; $n++){
-                    $media=new Media();
-                    $lien= '5K3VXw9ywp8';
+                for ($n = 0; $n < 4; $n++) {
+                    $media = new Media();
+                    $lien = $videos[$n];
                     $media->setLien($lien);
                     $media->setFigure($figure);
                     $manager->persist($media);
                 }
-
- 
-
                 for ($n = 0; $n < 15; $n++) {
                     $comment = new Comment();
                     $comment->setFigure($figure)
-                        ->setWriter($admin)
+                        ->setWriter($user[rand(0, 3)])
                         ->setContent($faker->paragraphs(2, true))
                         ->setDate(new DateTime());
                     $manager->persist($comment);
