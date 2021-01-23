@@ -6,7 +6,8 @@
 			<div class="d-flex justify-content-center">
 
 				<a href="{{ path ('main')}}">
-					<i class="fas fa-home"></i>
+					<i class="fas fa-home fa-2x"></i>
+
 				</a>
 			</div>
 		</div>
@@ -16,11 +17,11 @@
 
 				{% if app.user %}
 					<a href="{{ path ('app_logout')}}">
-						<i class="fas fa-sign-out-alt"></i>
+						<i class="fas fa-sign-out-alt fa-2x"></i>
 					</a>
 				{% else %}
 					<a href="{{ path ('app_login')}}">
-						<i class="fas fa-sign-in-alt"></i>
+						<i class="fas fa-sign-in-alt fa-2x"></i>
 					</a>
 				{% endif %}
 			</div>
