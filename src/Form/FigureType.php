@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\Figure;
-use App\Entity\Description;
+use App\Entity\category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -26,13 +26,13 @@ class FigureType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom'
             ])
-            ->add('description', TextareaType::class, [
+            ->add('category', TextareaType::class, [
                 'attr' => ['rows' => '15'],
             ])
             ->add('type', EntityType::class, [
                 'label' => 'Groupes',
-                'class' => Description::class,
-                'choice_label' => 'description'
+                'class' => category::class,
+                'choice_label' => 'category'
 
             ])
             ->add('images', FileType::class, [

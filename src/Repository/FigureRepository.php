@@ -25,8 +25,8 @@ class FigureRepository extends ServiceEntityRepository
      */
     public function getPaginationFigures($page, $limit)
     {
-        $query = $this->createQueryBuilder('a')
-            ->orderBy('a.id', 'DESC')
+        $query = $this->createQueryBuilder('f')
+            ->orderBy('f.id', 'DESC')
             ->setMaxResults($page * $limit);
 
         return $query->getQuery()->getResult();
@@ -37,8 +37,8 @@ class FigureRepository extends ServiceEntityRepository
      */
     public function getTotalFigure()
     {
-        $query = $this->createQueryBuilder('a')
-            ->select('COUNT(a)');
+        $query = $this->createQueryBuilder('f')
+            ->select('COUNT(f)');
         return $query->getQuery()->getSingleScalarResult();
     }
 

@@ -56,11 +56,12 @@
 
 		{#affichage des elements de la figure #}
 		<div class="row">
-			<p class="h1" style="text-center" >{{figure.name}}</p>
+			<p class="h1" style="text-center">{{figure.name}}</p>
 		</div>
 
 		<div class="row">
-			<p class="p-3 mb-2 text-justify" style="white-space:pre-line">{{figure.description}}</p>
+			<p class="p-3 mb-2 text-justify" style="white-space:pre-line">{{figure.category}}</p>
+
 		</div>
 		<div class="row justify-content-around p-3 mb-2">
 			<div class="col">
@@ -81,7 +82,7 @@
 			{% endif %}
 			<div class="col">
 				<h4>
-					<span class="badge badge-secondary mr-0">{{figure.type.description}}</span>
+					<span class="badge badge-secondary mr-0">{{figure.type.category}}</span>
 				</h4>
 			</div>
 		</div>

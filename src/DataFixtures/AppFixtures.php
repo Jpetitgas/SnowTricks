@@ -6,11 +6,12 @@ use DateTime;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Media;
 use App\Entity\Figure;
 use App\Entity\Comment;
-use App\Entity\Description;
-use App\Entity\Media;
+use App\Entity\Category;
 use App\Entity\Portrait;
+use App\Entity\Description;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -56,16 +57,16 @@ class AppFixtures extends Fixture
         $user=$this->userRepository->findAll();
         
         foreach ($style as $key => $value) {
-            $description = new Description;
-            $description->setDescription($value);
-            $manager->persist($description);
+            $category = new Category;
+            $category->setcategory($value);
+            $manager->persist($category);
             for ($p = 0; $p < 7; $p++) {
                 $figure = new Figure();
 
                 $figure->setName($faker->words(2, true))
                     ->setWriter($user[rand(0, 3)])
-                    ->setDescription($faker->paragraphs(5, true))
-                    ->setType($description)
+                    ->setCategory($faker->paragraphs(5, true))
+                    ->setType($category)
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
                     ->setDate($faker->dateTimeBetween('-6 months'));
                 $manager->persist($figure);

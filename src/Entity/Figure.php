@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\Collection;
@@ -29,7 +30,7 @@ class Figure
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="relation")
@@ -38,7 +39,7 @@ class Figure
     private $writer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Description::class, inversedBy="figures")
+     * @ORM\ManyToOne(targetEntity=category::class, inversedBy="figures")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
@@ -99,14 +100,14 @@ class Figure
         return $this;
     }
 
-    public function getdescription(): ?string
+    public function getCategory(): ?string
     {
-        return $this->description;
+        return $this->category;
     }
 
-    public function setdescription(string $description): self
+    public function setCategory(string $category): self
     {
-        $this->description = $description;
+        $this->category = $category;
 
         return $this;
     }
@@ -123,12 +124,12 @@ class Figure
         return $this;
     }
 
-    public function getType(): ?Description
+    public function getType(): ?Category
     {
         return $this->type;
     }
 
-    public function setType(?Description $type): self
+    public function setType(?Category $type): self
     {
         $this->type = $type;
 

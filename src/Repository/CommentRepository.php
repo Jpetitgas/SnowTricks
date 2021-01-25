@@ -25,9 +25,9 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getPaginationComments($figure, $page, $limit)
     {
-        $query = $this->createQueryBuilder('a')
-            ->orderBy('a.id', 'DESC')
-            ->Where('a.figure = :figure')
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            ->Where('c.figure = :figure')
             ->setParameter(':figure', $figure)
             ->setMaxResults($page * $limit);
 
@@ -39,10 +39,10 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getTotalComment($figure)
     {
-        $query = $this->createQueryBuilder('a')
-            ->Where('a.figure = :figure')
+        $query = $this->createQueryBuilder('ca')
+            ->Where('c.figure = :figure')
             ->setParameter(':figure', $figure)
-            ->select('COUNT(a)');
+            ->select('COUNT(c)');
         return $query->getQuery()->getSingleScalarResult();
     }
 

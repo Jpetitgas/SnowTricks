@@ -6,11 +6,11 @@ use DateTime;
 use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Comment;
+use App\Media\AddMedia;
 use App\Form\FigureType;
 use App\Image\MainImage;
 use App\Form\CommentType;
 use App\Image\UpLoadImages;
-use App\Media\AddMedia;
 use App\Repository\FigureRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FigureController extends AbstractController
@@ -51,8 +52,7 @@ class FigureController extends AbstractController
         $limit = 5;
         $page = (int)$request->query->get("page", 1);
         $comments = $commentRepository->getPaginationComments($figure, $page, $limit);
-        $total = $commentRepository->getTotalComment($figure);
-        
+                
         if (!$figure) {
             $this->addFlash('danger', "Cette figure n'existe pas");
             return $this->RedirectToRoute('main');
@@ -89,6 +89,7 @@ class FigureController extends AbstractController
     }
     /**
      * @Route("/figure/create", name="figure_create")
+     * @IsGranted("ROLE_USER")
      */
     public function create(Request $request, Security $securit, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
@@ -134,6 +135,7 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/figure/edit/{slug}", name="figure_edit", priority=-1)
+     * @IsGranted("ROLE_USER")
      */
     public function edit($slug, Request $request, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
@@ -193,6 +195,7 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/figure/delete/{slug}", name="figure_delete")
+     * @IsGranted("ROLE_USER")
      */
     public function delete($slug, FigureRepository $figureRepository, EntityManagerInterface $em): Response
     {
