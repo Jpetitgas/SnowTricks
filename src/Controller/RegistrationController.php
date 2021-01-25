@@ -5,7 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use App\Entity\Portrait;
-use App\Image\UpLoadPortrait;
+use App\Image\upLoadPortrait;
 use App\Form\EditUserFormType;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
@@ -24,12 +24,12 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class RegistrationController extends AbstractController
 {
     private $emailVerifier;
-    protected $uploadPortrait;
+    protected $upLoadPortrait;
 
-    public function __construct(EmailVerifier$emailVerifier, UpLoadPortrait $uploadPortrait)
+    public function __construct(EmailVerifier $emailVerifier, upLoadPortrait $upLoadPortrait)
     {
         $this->emailVerifier = $emailVerifier;
-        $this->uploadPortrait = $uploadPortrait;
+        $this->upLoadPortrait = $upLoadPortrait;
     }
 
     /**
@@ -46,9 +46,9 @@ class RegistrationController extends AbstractController
             //import du fichier portrait
             $portrait = $form->get('portrait')->getData();
             if (!$portrait) {
-                $this->uploadPortrait->uploadDefault($user);
+                $this->upLoadPortrait->upLoadDefault($user);
             } else {
-               $this->uploadPortrait->Upload($portrait, $user); 
+                $this->upLoadPortrait->upLoad($portrait, $user);
             }
 
             $user->setDate(new DateTime);
@@ -108,7 +108,7 @@ class RegistrationController extends AbstractController
             //import du fichier portrait
             $portrait = $form->get('portrait')->getData();
             if ($portrait) {
-                $this->uploadPortrait->Upload($portrait, $user);
+                $this->upLoadPortrait->upLoad($portrait, $user);
             }
 
             $entityManager->flush();
@@ -136,7 +136,6 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('main');

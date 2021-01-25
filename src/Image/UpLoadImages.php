@@ -7,9 +7,9 @@ use App\Entity\Image;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class UpLoadImages extends AbstractController
+class upLoadImages extends AbstractController
 {
-    public function Upload($images, Figure $figure)
+    public function upLoad($images, Figure $figure)
     {
         foreach ($images as $image) {
             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
@@ -23,7 +23,7 @@ class UpLoadImages extends AbstractController
             $figure->addImage($img);
         }
     }
-    public function uploadDefault(Figure $figure)
+    public function upLoadDefault(Figure $figure)
     {
         $url = $this->getParameter('images_default') . '/' . 'default_figure.jpg';
         $file_name = md5(uniqid()) . '.jpg';
