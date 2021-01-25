@@ -17,7 +17,7 @@ class MediaController extends AbstractController
     /**
      * @Route("/delete/media/{id}", name="figure_delete_media", methods={"DELETE"}) 
      */
-    public function deletemedia(Media $media, Request $request, FigureRepository $figureRepository, EntityManagerInterface $em)
+    public function deletemedia(Media $media, Request $request, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
         if ($this->isCsrfTokenValid('delete' . $media->getId(), $data['_token'])) {
