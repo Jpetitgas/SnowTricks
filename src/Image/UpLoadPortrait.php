@@ -7,7 +7,7 @@ use App\Entity\Image;
 use App\Entity\Portrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class upLoadPortrait extends AbstractController
+class UpLoadPortrait extends AbstractController
 {
     public function upLoad($portrait, User $user)
     {

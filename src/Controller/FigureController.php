@@ -10,7 +10,7 @@ use App\Media\AddMedia;
 use App\Form\FigureType;
 use App\Image\MainImage;
 use App\Form\CommentType;
-use App\Image\upLoadImages;
+use App\Image\UpLoadImages;
 use App\Repository\FigureRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;

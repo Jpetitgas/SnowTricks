@@ -5,7 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use App\Entity\Portrait;
-use App\Image\upLoadPortrait;
+use App\Image\UpLoadPortrait;
 use App\Form\EditUserFormType;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
@@ -26,7 +26,7 @@ class RegistrationController extends AbstractController
     private $emailVerifier;
     protected $upLoadPortrait;
 
-    public function __construct(EmailVerifier $emailVerifier, upLoadPortrait $upLoadPortrait)
+    public function __construct(EmailVerifier $emailVerifier, UpLoadPortrait $upLoadPortrait)
     {
         $this->emailVerifier = $emailVerifier;
         $this->upLoadPortrait = $upLoadPortrait;

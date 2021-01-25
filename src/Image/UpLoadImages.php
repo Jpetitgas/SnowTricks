@@ -7,7 +7,7 @@ use App\Entity\Image;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class upLoadImages extends AbstractController
+class UpLoadImages extends AbstractController
 {
     public function upLoad($images, Figure $figure)
     {
