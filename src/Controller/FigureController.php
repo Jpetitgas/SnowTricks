@@ -26,33 +26,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FigureController extends AbstractController
 {
     protected $mainImage;
-    protected $uploadImages;
+    protected $upLoadImages;
     protected $addMedia;
 
 
-    public function __construct(MainImage $mainImage, UpLoadImages $upLoadImages, AddMedia $addMedia)
+    public function __construct(MainImage $mainImage, upLoadImages $upLoadImages, AddMedia $addMedia)
     {
-        $this->addMedia= $addMedia;
+        $this->addMedia = $addMedia;
         $this->mainImage = $mainImage;
-        $this->uploadImages = $upLoadImages;
+        $this->upLoadImages = $upLoadImages;
     }
 
 
     /**
      * @Route("/figure/{slug}", name="figure_show", priority=-1)
      */
-    public function show($slug, Request $request,CommentRepository $commentRepository, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    public function show($slug, Request $request, CommentRepository $commentRepository, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy(
             [
                 'slug' => $slug
             ]
         );
-        
+
         $limit = 5;
         $page = (int)$request->query->get("page", 1);
         $comments = $commentRepository->getPaginationComments($figure, $page, $limit);
-                
+
         if (!$figure) {
             $this->addFlash('danger', "Cette figure n'existe pas");
             return $this->RedirectToRoute('main');
@@ -78,7 +78,7 @@ class FigureController extends AbstractController
                 'page' => $page
             ]);
         }
-        
+
         $fromView = $form->createView();
 
         return $this->render('figure/show.html.twig', [
@@ -103,11 +103,13 @@ class FigureController extends AbstractController
             $images = $form->get('images')->getData();
 
             if (!$images) {
-                $this->uploadImages->uploadDefault($figure);
-            } else {$this->uploadImages->Upload($images, $figure);}
-           
+                $this->upLoadImages->upLoadDefault($figure);
+            } else {
+                $this->upLoadImages->upLoad($images, $figure);
+            }
+
             $media = $form->get('media')->getData();
-            if ($media){
+            if ($media) {
                 $this->addMedia->addUrl($media, $figure);
             }
 
@@ -144,10 +146,8 @@ class FigureController extends AbstractController
                 'slug' => $slug
             ]
         );
-        
-        
+
         if (!$figure) {
-            //throw $this->createNotFoundException("Cette figure n'existe pas");
             $this->addFlash('danger', "Cette figure n'existe pas");
             return $this->RedirectToRoute('main');
         }
@@ -160,7 +160,7 @@ class FigureController extends AbstractController
 
             $images = $form->get('images')->getData();
             if ($images) {
-                $this->uploadImages->Upload($images, $figure);
+                $this->upLoadImages->upLoad($images, $figure);
             }
 
             $media = $form->get('media')->getData();
@@ -171,14 +171,14 @@ class FigureController extends AbstractController
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
-            //$figure->setDate(new DateTime());
+            
             $figure->setDateMod(new DateTime());
 
             $em->flush();
             //reglage de l'image principale 
             $newMainImage = $form->get('main')->getData();
             $figure_id = $figure->getId();
-            $this->mainImage->ChangeMainImage($figure_id, $newMainImage);
+            $this->mainImage->changeMainImage($figure_id, $newMainImage);
 
             $this->addFlash('success', "La figure a été modifée");
 
@@ -186,7 +186,7 @@ class FigureController extends AbstractController
         }
 
         $fromView = $form->createView();
-        
+
         return $this->render('figure/edit.html.twig', [
             'figure' => $figure,
             'formView' => $fromView

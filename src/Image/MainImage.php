@@ -24,7 +24,7 @@ class MainImage
         $this->em = $em;
     }
 
-    public function ChangeMainImage($figure_id, $newMainImage)
+    public function changeMainImage($figure_id, $newMainImage)
     {
         $figure = $this->figureRepository->findOneBy(['id' => $figure_id]);
         $images = $this->imageRepository->findBy(['figure' => $figure]);
