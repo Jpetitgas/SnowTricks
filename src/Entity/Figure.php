@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\FigureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FigureRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ * @UniqueEntity(fields={"name"}, message="Ce nom de figure est déjà pris")
  */
 class Figure
 {
@@ -20,14 +23,14 @@ class Figure
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $desciption;
+    private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="relation")
@@ -36,14 +39,14 @@ class Figure
     private $writer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Description::class, inversedBy="figures")
+     * @ORM\ManyToOne(targetEntity=category::class, inversedBy="figures")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure")
-     *  
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $comments;
 
@@ -52,10 +55,6 @@ class Figure
      */
     private $date;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mainpicture;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -67,9 +66,21 @@ class Figure
      */
     private $date_mod;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="figure", orphanRemoval=true, cascade={"persist"} )
+     */
+    private $images;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure", orphanRemoval=true, cascade={"persist"})
+     */
+    private $media;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,14 +100,14 @@ class Figure
         return $this;
     }
 
-    public function getDesciption(): ?string
+    public function getCategory(): ?string
     {
-        return $this->desciption;
+        return $this->category;
     }
 
-    public function setDesciption(string $desciption): self
+    public function setCategory(string $category): self
     {
-        $this->desciption = $desciption;
+        $this->category = $category;
 
         return $this;
     }
@@ -113,12 +124,12 @@ class Figure
         return $this;
     }
 
-    public function getType(): ?Description
+    public function getType(): ?Category
     {
         return $this->type;
     }
 
-    public function setType(?Description $type): self
+    public function setType(?Category $type): self
     {
         $this->type = $type;
 
@@ -167,17 +178,6 @@ class Figure
         return $this;
     }
 
-    public function getMainpicture(): ?string
-    {
-        return $this->mainpicture;
-    }
-
-    public function setMainpicture(string $mainpicture): self
-    {
-        $this->mainpicture = $mainpicture;
-
-        return $this;
-    }
 
     public function getSlug(): ?string
     {
@@ -199,6 +199,66 @@ class Figure
     public function setDateMod(?\DateTimeInterface $date_mod): self
     {
         $this->date_mod = $date_mod;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getFigure() === $this) {
+                $image->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getFigure() === $this) {
+                $medium->setFigure(null);
+            }
+        }
 
         return $this;
     }

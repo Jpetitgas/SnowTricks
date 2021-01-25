@@ -1,0 +1,39 @@
+<nav id="navbarlarge" class="navbar bg-dark">
+
+	<div class="row">
+		<div class="col-9">
+			<a class="navbar-brand" href="{{ path ('main')}}">Snowtrick</a>
+		</div>
+		<div class="col-3">
+			<div class="d-flex justify-content-between align-items-center">
+
+
+				<a href="{{ path ('main')}}">Accueil
+
+					<span class="sr-only">(current)</span>
+				</a>
+
+				{% if app.user %}
+					<a href="{{ path ('figure_create')}}">Nouvelle figure</a>
+
+					<a href="{{ path ('app_logout')}}">Se déconnecter</a>
+
+					<a href="{{ path ('edit_user', {'id': app.user.id})}}">
+
+						<font style="vertical-adivgn: inherit;">
+							<font style="vertical-adivgn: inherit;">
+								<img src="\images\main\{{app.user.portrait.name}}" class="rounded-circle" height="40">
+							</font>
+						</a>
+					{% else %}
+						<a href="{{ path ('app_register')}}">Créer un compte</a>
+
+						<a href="{{ path ('app_login')}}">Se connecter</a>
+
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</nav>

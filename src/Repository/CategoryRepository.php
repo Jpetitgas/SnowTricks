@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Description;
+use App\Entity\category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Description|null find($id, $lockMode = null, $lockVersion = null)
- * @method Description|null findOneBy(array $criteria, array $orderBy = null)
- * @method Description[]    findAll()
- * @method Description[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method category|null find($id, $lockMode = null, $lockVersion = null)
+ * @method category|null findOneBy(array $criteria, array $orderBy = null)
+ * @method category[]    findAll()
+ * @method category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DescriptionRepository extends ServiceEntityRepository
+class CategoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Description::class);
+        parent::__construct($registry, category::class);
     }
 
     // /**
-    //  * @return Description[] Returns an array of Description objects
+    //  * @return category[] Returns an array of category objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class DescriptionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Description
+    public function findOneBySomeField($value): ?category
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.exampleField = :val')

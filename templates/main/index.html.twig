@@ -2,21 +2,45 @@
 
 {% block title %}accueil
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('/css/main.css')}}">
+
+{% endblock %}
 
 {% block body %}
-	<img src="\images\main_1.jpg" class="img-fluid" alt="Responsive image">
 
-	<div class="row m-4">
-		<div class="row">
-			{% for figure in figures %}
-				<div class="col-1 col-sm">
-					{% include "figure/_figure_card.html.twig" %}
-				</div>
-				{% if loop.index is divisible by(5) %}
-				</div>
-				<div class="row">
-				{% endif %}
-			{% endfor %}
+	{# Image principale de #}
+	<div id="image" class="row texte-center">
+		<div class='product-holder'>
+			<div class='product-image'>
+				<img src="\images\main_1.jpg" class="img-fluid" alt="Responsive image">
+				<button class='down' id="togg1">
+					<i class="fa fa-chevron-down" aria-hidden="true"></i>
+				</button>
+			</div>
 		</div>
 	</div>
-{% endblock %}
+
+	{# affichage des cards des figures #}
+	<div id="content" class="container">
+		{% include "main/_content.html.twig"%}
+	</div>
+</div>
+{# bouton de remonté #}
+<div class="row up">
+	<button id="togg2">
+		<i class="fa fa-chevron-up" aria-hidden="true"></i>
+	</button>
+</div>
+
+{# bouton pour obtenir plus de figures#}
+<div id="page" style="display: none">2</div>
+
+<div class="row justify-content-center">
+	<div id='loader' style='display: none'>
+		<i class="fas fa-spinner fa-pulse"></i>
+	</div>
+	<button id="plus">+ de figures</button>
+</div>{% endblock %}{% block javascripts %}
+<script src="{{ asset('/js/figure.js')}}"></script>{% endblock %}

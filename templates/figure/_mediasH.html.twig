@@ -1,0 +1,22 @@
+<div class="col-6">
+	{% if figure.images %}
+		<div class="slider">
+			{% for image in figure.images %}
+				<div class="col-12">
+					<img src="\images\main\{{image.name}}" class="img-thumbnail">
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+</div>
+<div class="col-6">
+	{% if figure.media %}
+		<div class="slider">
+			{% for media in figure.media %}
+				<div class="col-12" style="height=50px">
+					<iframe width="150" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+</div>

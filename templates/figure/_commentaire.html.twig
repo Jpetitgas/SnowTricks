@@ -1,0 +1,25 @@
+{% if app.user %}
+	<div class="row  align-items-center">
+		<div id="portrait" class="col-2">
+			<img id="portrait" src="\images\main\{{app.user.portrait.name}}" class="rounded-circle">
+
+		</div>
+		<div class="col-9">
+			{{ form_start(formView) }}
+			{{ form_widget(formView) }}
+		</div>
+		<div class="col-1">
+			<button type="submit" class="btn btn-lg btn-primary center">
+				<i class="fas fa-save"></i>
+			</button>
+		</div>
+		{{ form_end(formView) }}
+
+	</div>
+{% else %}
+	<div class="row">
+		<h5>Vous devez etre connecté pour laisser un commentaire:
+			<a class="btn  btn-success" href="{{ path ('app_login')}}">Sign in</a>
+		</h5>
+	</div>
+{% endif %}

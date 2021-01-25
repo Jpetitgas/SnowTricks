@@ -11,7 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"username"}, message="Ce nom d'utilisateur est déjà pris")
+ * @UniqueEntity(fields={"email"}, message="Cette addresse mail est déjà utilisée")
  */
 class User implements UserInterface
 {
@@ -49,7 +50,7 @@ class User implements UserInterface
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -62,6 +63,12 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="writer", orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Portrait::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $portrait;
 
     public function __construct()
     {
@@ -234,6 +241,18 @@ class User implements UserInterface
                 $comment->setWriter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPortrait(): ?Portrait
+    {
+        return $this->portrait;
+    }
+
+    public function setPortrait(Portrait $portrait): self
+    {
+        $this->portrait = $portrait;
 
         return $this;
     }

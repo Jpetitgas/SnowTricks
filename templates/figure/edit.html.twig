@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formView 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}edition
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('/css/figure.css')}}">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous"/>
+{% endblock %}
+
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-around p-3 mb-2">
+			<h1>Modification de la figure</h1>
+		</div>
+
+		{# image mise en avant pour la figure #}
+		<div id="image">
+			{% for item in figure.images %}
+				{% if item.main %}
+					<img src="\images\main\{{item.name}}" class="img-thumbnail" alt="image de la figure">
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		{# affichage des medias ecran large #}
+		<div class="row" id="large">
+			{% include "figure/_editMediasH.html.twig"%}
+		</div>
+
+		{#affichage des medias ecran small #}
+		<div class="row small" id="under">
+			<button>Voir les medias</button>
+		</div>
+		<div id="medias" class="row small">
+
+			{% include "figure/_editMediasV.html.twig"%}
+		</div>
+
+
+		<div id='loader' style='display: none'>
+			<i class="fas fa-spinner fa-pulse"></i>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				{{ form_start(formView) }}
+
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(formView.name) }}
+					</div>
+					<div class="col-6">
+						{{ form_row(formView.type) }}
+
+					</div>
+				</div>
+
+				{{ form_row(formView.category) }}
+
+
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(formView.images) }}
+					</div>
+					<div class="col-6">
+						{{ form_row(formView.media) }}
+					</div>
+				</div>
+
+				{{ form_widget(formView.main) }}
+				<div class="d-flex justify-content-center">
+
+					<div class="col-6">
+						<button type="submit" class="btn btn-lg btn-primary center">Modifier</button>
+					</div>
+
+					<div class="col-6">
+						<a href="{{path("figure_delete", {'slug': figure.slug}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
+					</div>
+				</div>
+				{{ form_end(formView) }}
+
+
+			</div>
+		</div>
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{ asset('/js/image.js')}}"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			$('.slider').slick({infinite: true, slidesToShow: 3, slidesToScroll: 3});
+		</script>
+
+	{% endblock %}

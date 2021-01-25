@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\DescriptionRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DescriptionRepository::class)
+ * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-class Description
+class Category
 {
     /**
      * @ORM\Id
@@ -22,7 +22,7 @@ class Description
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="type")
@@ -39,14 +39,14 @@ class Description
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getCategory(): ?string
     {
-        return $this->description;
+        return $this->category;
     }
 
-    public function setDescription(string $description): self
+    public function setCategory(string $category): self
     {
-        $this->description = $description;
+        $this->category = $category;
 
         return $this;
     }

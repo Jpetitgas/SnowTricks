@@ -1,0 +1,29 @@
+<div id="navbarsmall" class="bg-dark">
+
+	<div id="navbarColor02" class="row">
+
+		<div class="col-6 justify-content-center">
+			<div class="d-flex justify-content-center">
+
+				<a href="{{ path ('main')}}">
+					<i class="fas fa-home fa-3x"></i>
+
+				</a>
+			</div>
+		</div>
+
+		<div class="col-6 ">
+			<div class="d-flex justify-content-center">
+
+				{% if app.user %}
+					<a href="{{ path ('app_logout')}}">
+						<i class="fas fa-sign-out-alt fa-3x"></i>
+					</a>
+				{% else %}
+					<a href="{{ path ('app_login')}}">
+						<i class="fas fa-sign-in-alt fa-3x"></i>
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
