@@ -30,7 +30,7 @@ class Figure
     /**
      * @ORM\Column(type="text")
      */
-    private $category;
+    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="relation")
@@ -100,14 +100,14 @@ class Figure
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getDescription(): ?string
     {
-        return $this->category;
+        return $this->description;
     }
 
-    public function setCategory(string $category): self
+    public function setDescription(string $description): self
     {
-        $this->category = $category;
+        $this->description = $description;
 
         return $this;
     }

@@ -19,8 +19,14 @@ window.onload = () => {
                     document.getElementById("loader").setAttribute("style", "display:none");
                     if (data.success) {
                         let ref = this.getAttribute("ref")
-                        document.getElementById(ref).remove()
+                        let dels = document.querySelectorAll("[del]") 
+                        for (del of dels){
+                            if (del.getAttribute("del") == ref) {
+                                del.remove();
+                            }
+                            
                     }
+                }
                     else
                         alert(data.error)
                 }).catch(e => alert(e))

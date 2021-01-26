@@ -3,7 +3,8 @@
 	{% if figure.images %}
 		<div>
 			{% for image in figure.images %}
-				<div class="col-12 {{image.name}}">
+				<div class="col-12" del="{{image.name}}">
+
 					<div class="row">
 						<a href="#" main-picture image="{{image.name}}" id="{{image.id}}">
 							<img src="{{ asset('/images/main/'~ image.name)}}" alt="Image" class="img-thumbnail">
@@ -20,7 +21,8 @@
 							{% endif %}
 						</div>
 						<div class="col-6">
-							<a href="{{path('figure_delete_image',{id: image.id})}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
+							<a href="{{path('figure_delete_image',{id: image.id})}}" ref="{{image.name}}" data-delete data-token="{{csrf_token('delete'~ image.id)}}">
+
 								<i class="fas fa-trash-alt"></i>
 							</a>
 						</div>
@@ -35,12 +37,15 @@
 	{% if figure.media %}
 		<div>
 			{% for media in figure.media %}
-				<div id="{{'V'~media.lien}}">
+				<div del="{{media.lien}}">
 					<div class="row">
-						<iframe width="540" height="300" src="https://www.youtube.com/embed/{{media.lien}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+						<iframe width="540" height="300" frameborder="0" src="https://www.youtube.com/embed/{{media.lien}}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 					</div>
 					<div class="row">
-						<a href="{{path('figure_delete_media',{id: media.id})}}" ref="{{'V'~media.lien}}" data-delete data-token="{{csrf_token('delete'~ media.id)}}">
+						<a href="{{path('figure_delete_media',{id: media.id})}}" ref="{{media.lien}}" data-delete data-token="{{csrf_token('delete'~ media.id)}}">
 							<i class="fas fa-trash-alt"></i>
 						</a>
 					</div>

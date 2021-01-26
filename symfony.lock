@@ -114,9 +114,6 @@
     "monolog/monolog": {
         "version": "2.2.0"
     },
-    "nikic/php-parser": {
-        "version": "v4.10.4"
-    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -305,15 +302,6 @@
             "./config/packages/mailer.yaml"
         ]
     },
-    "symfony/maker-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
-        }
-    },
     "symfony/mime": {
         "version": "v5.2.1"
     },
@@ -354,12 +342,12 @@
         "version": "v2.1.0"
     },
     "symfony/phpunit-bridge": {
-        "version": "4.3",
+        "version": "5.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "4.3",
-            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
+            "version": "5.1",
+            "ref": "cb82a2355ec62fef0e7028ac969fe86fa722feb8"
         },
         "files": [
             "./.env.test",
