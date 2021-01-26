@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
 
                 $figure->setName($faker->words(2, true))
                     ->setWriter($user[rand(0, 3)])
-                    ->setCategory($faker->paragraphs(5, true))
+                    ->setDescription($faker->paragraphs(5, true))
                     ->setType($category)
                     ->setSlug(strtolower($this->slugger->slug($figure->getName())))
                     ->setDate($faker->dateTimeBetween('-6 months'));

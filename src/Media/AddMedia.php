@@ -26,6 +26,7 @@ class AddMedia
     public function addUrl($url,Figure $figure)
     {
         $url= substr($url, strlen('https://youtu.be/'));
+        
         $media = new Media();
         $media->setLien($url);
         $figure->addMedium($media);
