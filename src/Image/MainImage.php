@@ -16,6 +16,11 @@ class MainImage
     
     protected $em;
 
+    /**
+     * @param ImageRepository $imageRepository
+     * @param EntityManagerInterface $em
+     * @param FigureRepository $figureRepository
+     */
     public function __construct( ImageRepository $imageRepository, EntityManagerInterface $em, FigureRepository $figureRepository)
     {
         
@@ -39,6 +44,11 @@ class MainImage
     }
     
    
+    /**
+     * @param mixed $figure
+     * 
+     * @return [type]
+     */
     public function mainImageNewFigure($figure)
     {
         $allImage = $this->imageRepository->findBy(['figure' => $figure]);

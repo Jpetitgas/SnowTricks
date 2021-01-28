@@ -9,6 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UpLoadImages extends AbstractController
 {
+    /**
+     * @param mixed $images
+     * @param Figure $figure
+     * 
+     * @return [type]
+     */
     public function upLoad($images, Figure $figure)
     {
         foreach ($images as $image) {
@@ -23,6 +29,11 @@ class UpLoadImages extends AbstractController
             $figure->addImage($img);
         }
     }
+    /**
+     * @param Figure $figure
+     * 
+     * @return [type]
+     */
     public function upLoadDefault(Figure $figure)
     {
         $url = $this->getParameter('images_default') . '/' . 'default_figure.jpg';
