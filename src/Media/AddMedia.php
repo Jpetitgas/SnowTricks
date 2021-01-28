@@ -15,6 +15,11 @@ class AddMedia
     protected $figureRepository;
     protected $em;
 
+    /**
+     * @param MediaRepository $mediaRepository
+     * @param EntityManagerInterface $em
+     * @param FigureRepository $figureRepository
+     */
     public function __construct(MediaRepository $mediaRepository, EntityManagerInterface $em, FigureRepository $figureRepository)
     {
 
@@ -23,6 +28,12 @@ class AddMedia
         $this->em = $em;
     }
 
+    /**
+     * @param mixed $url
+     * @param Figure $figure
+     * 
+     * @return [type]
+     */
     public function addUrl($url,Figure $figure)
     {
         $url= substr($url, strlen('https://youtu.be/'));

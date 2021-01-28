@@ -9,6 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UpLoadPortrait extends AbstractController
 {
+    /**
+     * @param mixed $portrait
+     * @param User $user
+     * 
+     * @return [type]
+     */
     public function upLoad($portrait, User $user)
     {
 
@@ -22,6 +28,11 @@ class UpLoadPortrait extends AbstractController
 
         $user->setPortrait($img);
     }
+    /**
+     * @param User $user
+     * 
+     * @return [type]
+     */
     public function upLoadDefault(User $user)
     {
         $url = $this->getParameter('images_default') . '/' . 'default_user.png';

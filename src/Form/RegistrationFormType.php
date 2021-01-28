@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -48,7 +49,16 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('portrait', FileType::class, [
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+            'constraints' => [
+                        new File([
+                            'maxSize' => '1024k',
+                            'mimeTypes' => [
+                                'image/*',
+                            ],
+                            'mimeTypesMessage' => 'Merci de telecharger un fichier image',
+                        ])
+                    ]
             ]);
     }
 

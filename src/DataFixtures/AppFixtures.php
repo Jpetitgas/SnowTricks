@@ -45,10 +45,10 @@ class AppFixtures extends Fixture
 
             $admin = new User;
             $hash = $this->encoder->encodePassword($admin, "admin2021");
-            $admin->setemail('admin'.$n.'@gmail.com')
+            $admin->setemail('user'.$n.'@gmail.com')
                 ->setPassword($hash)
-                ->SetUsername('admin202'.$n)
-                ->Setroles(['ROLE_ADMIN'])
+                ->SetUsername('user202'.$n)
+                ->Setroles(['ROLE_USER'])
                 ->setPortrait($img)
                 ->setDate(new datetime);
             $manager->persist($admin);
