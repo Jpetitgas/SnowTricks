@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Nouvelle Categorie
+{% endblock %}
+
+{% block body %}
+	<div class="container ">
+		<div class="row justify-content-around">
+			<h1>Creation d'une nouvelle categie</h1>
+		</div>
+		<div class="col border border-dark p-3">
+
+			{{ include('category/_form.html.twig') }}
+		</div>
+
+		<a href="{{ path('main') }}">Annuler</a>
+	</div>
+
+{% endblock %}

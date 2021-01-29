@@ -15,9 +15,8 @@
 
 				{% if app.user %}
 					<a href="{{ path ('figure_create')}}">Nouvelle figure</a>
-
+					<a href="{{ path ('category_new')}}">Nouvelle Categorie</a>
 					<a href="{{ path ('app_logout')}}">Se déconnecter</a>
-
 					<a href="{{ path ('edit_user', {'id': app.user.id})}}">
 
 						<font style="vertical-adivgn: inherit;">

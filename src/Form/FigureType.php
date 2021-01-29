@@ -4,7 +4,7 @@ namespace App\Form;
 
 
 use App\Entity\Figure;
-use App\Entity\category;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;

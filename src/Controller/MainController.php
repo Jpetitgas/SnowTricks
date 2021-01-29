@@ -18,7 +18,7 @@ class MainController extends AbstractController
      */
     public function index(FigureRepository $figureRepository, Request $request): Response
     {
-        $limit = 15;
+        $limit = 10;
         $page = (int)$request->query->get("page", 1);
         
         $figures = $figureRepository->getPaginationFigures($page, $limit);
