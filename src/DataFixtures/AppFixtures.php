@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
             $manager->persist($img);
 
             $admin = new User;
-            $hash = $this->encoder->encodePassword($admin, "admin2021");
+            $hash = $this->encoder->encodePassword($admin, 'user202' . $n);
             $admin->setemail('user'.$n.'@gmail.com')
                 ->setPassword($hash)
                 ->SetUsername('user202'.$n)

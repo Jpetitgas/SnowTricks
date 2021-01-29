@@ -17,11 +17,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 class FigureController extends AbstractController
 {
@@ -194,14 +197,19 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/delete/{slug}", name="figure_delete")
+     * @Route("/figure/delete/{slug}/{token}", name="figure_delete")
      * @IsGranted("ROLE_USER")
      */
-    public function delete($slug, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    public function delete($slug, FigureRepository $figureRepository, Request $request, CsrfTokenManagerInterface $csrfTokenManager,EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy([
             'slug' => $slug
         ]);
+       
+        $token = new CsrfToken('delete' . $figure->getId() . $figure->getSlug(), $request->attributes->get('token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token n\'est pas valide.');
+        }
         if (!$figure) {
             throw $this->createNotFoundException("Cette figure n'existe pas");
         }

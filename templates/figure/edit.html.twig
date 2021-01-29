@@ -80,7 +80,8 @@
 					</div>
 
 					<div class="col-6">
-						<a href="{{path("figure_delete", {'slug': figure.slug}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
+						<a href="{{path("figure_delete", {'slug': figure.slug, 'token': csrf_token('delete'~ figure.id ~ figure.slug)}) }}" class="btn btn-lg btn-danger center" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')">Supprimer</a>
+
 					</div>
 				</div>
 				{{ form_end(formView) }}
