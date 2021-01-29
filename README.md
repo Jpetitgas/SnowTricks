@@ -1,7 +1,6 @@
 # SnowTricks
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a61d7562d83f403084857c4e067338fd)](https://app.codacy.com/gh/Jpetitgas/SnowTricks?utm_source=github.com&utm_medium=referral&utm_content=Jpetitgas/SnowTricks&utm_campaign=Badge_Grade)
-[![SymfonyInsight](https://insight.symfony.com/projects/817a96fc-b334-413e-ba03-967dd474542a/big.svg)](https://insight.symfony.com/projects/817a96fc-b334-413e-ba03-967dd474542a)
 
 How to install the project with your own local environment (like Wampserver for to have database)
 - Symfony 5.2 
@@ -25,3 +24,5 @@ From your terminal, go to the project directory and tape those command line :
 - php bin/console doctrine:migrations:migrate
 - php bin/console doctrine:fixtures:load
 - symfony server:start -d
+
+iden : user2021 password: user2021
