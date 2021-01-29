@@ -89,7 +89,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/edit/{id}", name="edit_user")
      */
-    public function edit($id, UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
+    public function edit($id, UserRepository $userRepository, Request $request): Response
     {
         $user = $userRepository->findOneBy(
             [
