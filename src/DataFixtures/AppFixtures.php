@@ -24,9 +24,9 @@ class AppFixtures extends Fixture
     protected $slugger;
     protected $userRepository;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, SluggerInterface $slugger, UserRepository $userRepository )
+    public function __construct(UserPasswordEncoderInterface $encoder, SluggerInterface $slugger, UserRepository $userRepository)
     {
-        $this->userRepository= $userRepository;
+        $this->userRepository = $userRepository;
         $this->encoder = $encoder;
         $this->slugger = $slugger;
     }
@@ -37,49 +37,54 @@ class AppFixtures extends Fixture
         $videos = array('0uGETVnkujA', '6cisNRS35gA', 'qsd8uaex-Is', 'h70kgLV2_Vg', '5K3VXw9ywp8');
         $style = array('grabs', 'rotations', 'flips', 'rotations désaxées', 'slides', 'one foot tricks', 'Old school');
 
+
+
         for ($n = 0; $n < 4; $n++) {
             $img = new Portrait();
-            $fichier = 'persona_'. $n.'.jpg';
+            $fichier = 'persona_' . $n . '.jpg';
             $img->setName($fichier);
             $manager->persist($img);
 
             $admin = new User;
             $hash = $this->encoder->encodePassword($admin, 'user202' . $n);
-            $admin->setemail('user'.$n.'@gmail.com')
+            $admin->setemail('user' . $n . '@gmail.com')
                 ->setPassword($hash)
-                ->SetUsername('user202'.$n)
+                ->SetUsername('user202' . $n)
                 ->Setroles(['ROLE_USER'])
                 ->setPortrait($img)
                 ->setDate(new datetime);
             $manager->persist($admin);
         }
         $manager->flush();
-        $user=$this->userRepository->findAll();
-        
-        foreach ($style as $key => $value) {
-            $category = new Category;
-            $category->setcategory($value);
-            $manager->persist($category);
-            for ($p = 0; $p < 7; $p++) {
-                $figure = new Figure();
+        $user = $this->userRepository->findAll();
 
-                $figure->setName($faker->words(2, true))
-                    ->setWriter($user[rand(0, 3)])
-                    ->setDescription($faker->paragraphs(5, true))
-                    ->setType($category)
-                    ->setSlug(strtolower($this->slugger->slug($figure->getName())))
-                    ->setDate($faker->dateTimeBetween('-6 months'));
-                $manager->persist($figure);
-                $nb = rand(1, 2);
-                $b = rand(0, $nb);
-                for ($m = 0; $m <=  $nb; $m++) {
-                    $img = new Image();
-                    $fichier = "main_" . $m . ".jpg";
-                    $m == $b ? $img->setMain(TRUE) : $img->setMain(FALSE);
-                    $img->setName($fichier);
-                    $img->setFigure($figure);
-                    $manager->persist($img);
-                }
+        $Json = file_get_contents("data.json", true);
+        $datas = json_decode($Json, true);
+
+        foreach ($datas as $data) {
+            $category = new Category;
+            $category->setcategory($data['category']);
+            $manager->persist($category);
+            $figure = new Figure();
+
+            $figure->setName($data['title'])
+                ->setWriter($user[rand(0, 3)])
+                ->setDescription($data['designation'])
+                ->setType($category)
+                ->setSlug(strtolower($this->slugger->slug($figure->getName())))
+                ->setDate($faker->dateTimeBetween('-6 months'));
+            $manager->persist($figure);
+
+
+            for ($m = 0; $m <=  3; $m++) {
+                $img = new Image();
+                $nb = rand(0, 11);
+                $fichier = "main_" . $nb . ".jpg";
+                $m == 0 ? $img->setMain(TRUE) : $img->setMain(FALSE);
+                $img->setName($fichier);
+                $img->setFigure($figure);
+                $manager->persist($img);
+
                 for ($n = 0; $n < 4; $n++) {
                     $media = new Media();
                     $lien = $videos[$n];

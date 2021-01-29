@@ -12,6 +12,7 @@ use App\Image\MainImage;
 use App\Form\CommentType;
 use App\Image\UpLoadImages;
 use App\Repository\FigureRepository;
+use App\Controller\CommentController;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +45,7 @@ class FigureController extends AbstractController
     /**
      * @Route("/figure/{slug}", name="figure_show", priority=-1)
      */
-    public function show($slug, Request $request, CommentRepository $commentRepository, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    public function show($slug, Request $request, CommentController $commentController, CommentRepository $commentRepository, Security $securit, FigureRepository $figureRepository, EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy(
             [
@@ -60,20 +61,17 @@ class FigureController extends AbstractController
             $this->addFlash('danger', "Cette figure n'existe pas");
             return $this->RedirectToRoute('main');
         }
-
+        
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setDate(new DateTime())
-                ->setWriter($user)
-                ->setFigure($figure);
-            $em->persist($comment);
-            $em->flush();
+            $commentController->create($user, $figure,$comment->getContent());
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
+        
         $page++;
         if ($request->get('ajax')) {
             return new JsonResponse([
@@ -174,7 +172,7 @@ class FigureController extends AbstractController
 
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
-            
+
             $figure->setDateMod(new DateTime());
 
             $em->flush();
@@ -200,12 +198,12 @@ class FigureController extends AbstractController
      * @Route("/figure/delete/{slug}/{token}", name="figure_delete")
      * @IsGranted("ROLE_USER")
      */
-    public function delete($slug, FigureRepository $figureRepository, Request $request, CsrfTokenManagerInterface $csrfTokenManager,EntityManagerInterface $em): Response
+    public function delete($slug, FigureRepository $figureRepository, Request $request, CsrfTokenManagerInterface $csrfTokenManager, EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy([
             'slug' => $slug
         ]);
-       
+
         $token = new CsrfToken('delete' . $figure->getId() . $figure->getSlug(), $request->attributes->get('token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException('CSRF Token n\'est pas valide.');
