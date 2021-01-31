@@ -20,7 +20,8 @@ class ImageController extends AbstractController
     public function deleteImage(Image $image, Request $request, FigureRepository $figureRepository, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
-        if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
+        $ref= htmlspecialchars('delete' . $image->getId());
+        if ($this->isCsrfTokenValid($ref, $data['_token'])) {
             $id_figure = $image->getFigure();
             $figure = $figureRepository->findOneBy(['id' => $id_figure]);
             $allImage = $figure->getImages();

@@ -20,7 +20,9 @@ class MediaController extends AbstractController
     public function deletemedia(Media $media, Request $request, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
-        if ($this->isCsrfTokenValid('delete' . $media->getId(), $data['_token'])) {
+
+        $ref=htmlspecialchars('delete' . $media->getId());
+        if ($this->isCsrfTokenValid($ref, $data['_token'])) {
                      
                 //suppression du fichier
                 $em = $this->getDoctrine()->getManager();

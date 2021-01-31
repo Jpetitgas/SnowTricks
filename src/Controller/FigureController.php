@@ -203,7 +203,7 @@ class FigureController extends AbstractController
         $figure = $figureRepository->findOneBy([
             'slug' => $slug
         ]);
-        $ref= 'delete' . $figure->getId() . $figure->getSlug();
+        $ref= htmlspecialchars('delete' . $figure->getId() . $figure->getSlug());
         $token = new CsrfToken($ref, $request->attributes->get('token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException('CSRF Token n\'est pas valide.');
