@@ -2,23 +2,23 @@
 
 namespace App\Controller;
 
-use DateTime;
-use App\Entity\User;
 use App\Entity\Portrait;
-use App\Image\UpLoadPortrait;
+use App\Entity\User;
 use App\Form\EditUserFormType;
-use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
+use App\Image\UpLoadPortrait;
 use App\Repository\UserRepository;
+use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
-use Symfony\Component\Mime\Address;
+use DateTime;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
                 $this->upLoadPortrait->upLoad($portrait, $user);
             }
 
-            $user->setDate(new DateTime);
+            $user->setDate(new DateTime());
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -93,7 +93,7 @@ class RegistrationController extends AbstractController
     {
         $user = $userRepository->findOneBy(
             [
-                'id' => $id
+                'id' => $id,
             ]
         );
         if (!$user) {
@@ -112,6 +112,7 @@ class RegistrationController extends AbstractController
             }
 
             $entityManager->flush();
+
             return $this->RedirectToRoute('main');
         }
 

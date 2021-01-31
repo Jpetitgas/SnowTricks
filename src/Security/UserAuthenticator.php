@@ -79,7 +79,6 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -98,7 +97,6 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
         }
 
         return new RedirectResponse($this->urlGenerator->generate('main'));
-       
     }
 
     protected function getLoginUrl()

@@ -27,8 +27,6 @@ class Portrait
      */
     private $user;
 
-
-
     public function getId(): ?int
     {
         return $this->id;

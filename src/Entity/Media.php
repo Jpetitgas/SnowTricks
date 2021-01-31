@@ -25,6 +25,7 @@ class Media
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="media")
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $figure;
 
