@@ -84,22 +84,22 @@ class AppFixtures extends Fixture
                 $img->setName($fichier);
                 $img->setFigure($figure);
                 $manager->persist($img);
+            }
 
-                for ($n = 0; $n < 4; $n++) {
-                    $media = new Media();
-                    $lien = $videos[$n];
-                    $media->setLien($lien);
-                    $media->setFigure($figure);
-                    $manager->persist($media);
-                }
-                for ($n = 0; $n < 15; $n++) {
-                    $comment = new Comment();
-                    $comment->setFigure($figure)
-                        ->setWriter($user[rand(0, 3)])
-                        ->setContent($faker->paragraphs(2, true))
-                        ->setDate(new DateTime());
-                    $manager->persist($comment);
-                }
+            for ($n = 0; $n < 4; $n++) {
+                $media = new Media();
+                $lien = $videos[$n];
+                $media->setLien($lien);
+                $media->setFigure($figure);
+                $manager->persist($media);
+            }
+            for ($n = 0; $n < 15; $n++) {
+                $comment = new Comment();
+                $comment->setFigure($figure)
+                    ->setWriter($user[rand(0, 3)])
+                    ->setContent($faker->paragraphs(2, true))
+                    ->setDate(new DateTime());
+                $manager->persist($comment);
             }
         }
 
