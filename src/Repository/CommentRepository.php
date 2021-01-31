@@ -20,7 +20,8 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns all comments per pages
+     * Returns all comments per pages.
+     *
      * @return void
      */
     public function getPaginationComments($figure, $page, $limit)
@@ -33,8 +34,10 @@ class CommentRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
     /**
-     * Returns number of comments
+     * Returns number of comments.
+     *
      * @return void
      */
     public function getTotalComment($figure)
@@ -43,6 +46,7 @@ class CommentRepository extends ServiceEntityRepository
             ->Where('c.figure = :figure')
             ->setParameter(':figure', $figure)
             ->select('COUNT(c)');
+
         return $query->getQuery()->getSingleScalarResult();
     }
 

@@ -20,7 +20,8 @@ class FigureRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns all Figures per pages
+     * Returns all Figures per pages.
+     *
      * @return void
      */
     public function getPaginationFigures($page, $limit)
@@ -31,14 +32,17 @@ class FigureRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
     /**
-     * Returns number of Figures
+     * Returns number of Figures.
+     *
      * @return void
      */
     public function getTotalFigure()
     {
         $query = $this->createQueryBuilder('f')
             ->select('COUNT(f)');
+
         return $query->getQuery()->getSingleScalarResult();
     }
 

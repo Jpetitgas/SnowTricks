@@ -2,24 +2,21 @@
 
 namespace App\Form;
 
-
-use App\Entity\Figure;
 use App\Entity\Category;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Url;
+use App\Entity\Figure;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Url;
 
 class FigureType extends AbstractType
 {
@@ -27,7 +24,7 @@ class FigureType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
             ])
             ->add('description', TextareaType::class, [
                 'attr' => ['rows' => '15'],
@@ -35,8 +32,7 @@ class FigureType extends AbstractType
             ->add('type', EntityType::class, [
                 'label' => 'Groupes',
                 'class' => category::class,
-                'choice_label' => 'category'
-
+                'choice_label' => 'category',
             ])
             ->add('images', FileType::class, [
                 'label' => 'Image(s)',
@@ -56,7 +52,7 @@ class FigureType extends AbstractType
                             ]),
                         ],
                     ]),
-                ]
+                ],
             ])
             ->add('media', UrlType::class, [
                 'label' => 'video',
@@ -72,12 +68,10 @@ class FigureType extends AbstractType
                         ]
                     ),
                 ],
-
             ])
             ->add('main', HiddenType::class, [
                 'mapped' => false,
                 'required' => false,
-
             ]);
     }
 

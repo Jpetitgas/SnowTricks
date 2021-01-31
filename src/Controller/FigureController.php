@@ -2,37 +2,35 @@
 
 namespace App\Controller;
 
-use DateTime;
-use App\Entity\Image;
-use App\Entity\Figure;
 use App\Entity\Comment;
-use App\Media\AddMedia;
+use App\Entity\Figure;
+use App\Entity\Image;
+use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Image\MainImage;
-use App\Form\CommentType;
 use App\Image\UpLoadImages;
-use App\Repository\FigureRepository;
-use App\Controller\CommentController;
+use App\Media\AddMedia;
 use App\Repository\CommentRepository;
+use App\Repository\FigureRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FigureController extends AbstractController
 {
     protected $mainImage;
     protected $upLoadImages;
     protected $addMedia;
-
 
     public function __construct(MainImage $mainImage, upLoadImages $upLoadImages, AddMedia $addMedia)
     {
@@ -41,7 +39,6 @@ class FigureController extends AbstractController
         $this->upLoadImages = $upLoadImages;
     }
 
-
     /**
      * @Route("/figure/{slug}", name="figure_show", priority=-1)
      */
@@ -49,34 +46,36 @@ class FigureController extends AbstractController
     {
         $figure = $figureRepository->findOneBy(
             [
-                'slug' => $slug
+                'slug' => $slug,
             ]
         );
 
         $limit = 5;
-        $page = (int)$request->query->get("page", 1);
+        $page = (int) $request->query->get('page', 1);
         $comments = $commentRepository->getPaginationComments($figure, $page, $limit);
 
         if (!$figure) {
             $this->addFlash('danger', "Cette figure n'existe pas");
+
             return $this->RedirectToRoute('main');
         }
-        
-        $comment = new Comment;
+
+        $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentController->create($user, $figure,$comment->getContent());
+            $commentController->create($user, $figure, $comment->getContent());
+
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
-        
-        $page++;
+
+        ++$page;
         if ($request->get('ajax')) {
             return new JsonResponse([
                 'contenu' => $this->renderView('figure/_commentaires.html.twig', compact('comments')),
-                'page' => $page
+                'page' => $page,
             ]);
         }
 
@@ -85,22 +84,22 @@ class FigureController extends AbstractController
         return $this->render('figure/show.html.twig', [
             'figure' => $figure,
             'comments' => $comments,
-            'formView' => $fromView
+            'formView' => $fromView,
         ]);
     }
+
     /**
      * @Route("/figure/create", name="figure_create")
      * @IsGranted("ROLE_USER")
      */
     public function create(Request $request, Security $securit, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
-        $figure = new Figure;
+        $figure = new Figure();
         $form = $this->createForm(FigureType::class, $figure);
 
         $form->handleRequest($request);
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-
             $images = $form->get('images')->getData();
 
             if (!$images) {
@@ -124,7 +123,7 @@ class FigureController extends AbstractController
             //Mise à la une de la premier image
             $this->mainImage->mainImageNewFigure($figure);
 
-            $this->addFlash('success', "La figure a été créée");
+            $this->addFlash('success', 'La figure a été créée');
 
             return $this->RedirectToRoute('main');
         }
@@ -132,7 +131,7 @@ class FigureController extends AbstractController
         $fromView = $form->CreateView();
 
         return $this->render('figure/create.html.twig', [
-            'formView' => $fromView
+            'formView' => $fromView,
         ]);
     }
 
@@ -144,12 +143,13 @@ class FigureController extends AbstractController
     {
         $figure = $figureRepository->findOneBy(
             [
-                'slug' => $slug
+                'slug' => $slug,
             ]
         );
 
         if (!$figure) {
             $this->addFlash('danger', "Cette figure n'existe pas");
+
             return $this->RedirectToRoute('main');
         }
 
@@ -158,7 +158,6 @@ class FigureController extends AbstractController
 
         $user = $securit->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-
             $images = $form->get('images')->getData();
             if ($images) {
                 $this->upLoadImages->upLoad($images, $figure);
@@ -169,19 +168,18 @@ class FigureController extends AbstractController
                 $this->addMedia->addUrl($media, $figure);
             }
 
-
             $figure->setWriter($user);
             $figure->setSlug(strtolower($slugger->slug($figure->getName())));
 
             $figure->setDateMod(new DateTime());
 
             $em->flush();
-            //reglage de l'image principale 
+            //reglage de l'image principale
             $newMainImage = $form->get('main')->getData();
             $figure_id = $figure->getId();
             $this->mainImage->changeMainImage($figure_id, $newMainImage);
 
-            $this->addFlash('success', "La figure a été modifée");
+            $this->addFlash('success', 'La figure a été modifée');
 
             return $this->RedirectToRoute('figure_show', ['slug' => $slug]);
         }
@@ -190,7 +188,7 @@ class FigureController extends AbstractController
 
         return $this->render('figure/edit.html.twig', [
             'figure' => $figure,
-            'formView' => $fromView
+            'formView' => $fromView,
         ]);
     }
 
@@ -201,9 +199,9 @@ class FigureController extends AbstractController
     public function delete($slug, FigureRepository $figureRepository, Request $request, CsrfTokenManagerInterface $csrfTokenManager, EntityManagerInterface $em): Response
     {
         $figure = $figureRepository->findOneBy([
-            'slug' => $slug
+            'slug' => $slug,
         ]);
-        $ref= htmlspecialchars('delete' . $figure->getId() . $figure->getSlug());
+        $ref = htmlspecialchars('delete'.$figure->getId().$figure->getSlug());
         $token = new CsrfToken($ref, $request->attributes->get('token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException('CSRF Token n\'est pas valide.');
@@ -214,7 +212,8 @@ class FigureController extends AbstractController
 
         $em->remove($figure);
         $em->flush();
-        $this->addFlash('success', "La figure a été supprimée");
+        $this->addFlash('success', 'La figure a été supprimée');
+
         return $this->RedirectToRoute('main');
     }
 }

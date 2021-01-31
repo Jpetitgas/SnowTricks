@@ -2,12 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Category;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FigureRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -40,7 +38,7 @@ class Figure
     private $writer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=category::class, inversedBy="figures")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="figures")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
@@ -55,7 +53,6 @@ class Figure
      * @ORM\Column(type="datetime")
      */
     private $date;
-
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -178,7 +175,6 @@ class Figure
 
         return $this;
     }
-
 
     public function getSlug(): ?string
     {

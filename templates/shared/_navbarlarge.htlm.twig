@@ -1,10 +1,10 @@
 <nav id="navbarlarge" class="navbar bg-dark">
 
 	<div class="row">
-		<div class="col-9">
+		<div class="col-8">
 			<a class="navbar-brand" href="{{ path ('main')}}">Snowtrick</a>
 		</div>
-		<div class="col-3">
+		<div class="col-4">
 			<div class="d-flex justify-content-between align-items-center">
 
 
@@ -16,6 +16,7 @@
 				{% if app.user %}
 					<a href="{{ path ('figure_create')}}">Nouvelle figure</a>
 					<a href="{{ path ('category_new')}}">Nouvelle Categorie</a>
+
 					<a href="{{ path ('app_logout')}}">Se déconnecter</a>
 					<a href="{{ path ('edit_user', {'id': app.user.id})}}">
 
