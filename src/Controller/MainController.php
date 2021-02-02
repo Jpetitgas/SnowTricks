@@ -18,7 +18,6 @@ class MainController extends AbstractController
     {
         $limit = 10;
         $page = (int) $request->query->get('page', 1);
-
         $figures = $figureRepository->getPaginationFigures($page, $limit);
         ++$page;
         if ($request->get('ajax')) {

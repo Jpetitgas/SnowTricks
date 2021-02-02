@@ -8,6 +8,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UpLoadPortrait extends AbstractController
 {
+    public function manager($portrait, $user, $route)
+    {
+        if (!$portrait) {
+            if ($route == 'create') {
+                $this->upLoadDefault($user);
+            }
+        } else {
+            $this->upLoad($portrait, $user);
+        }
+        
+    }
+
     /**
      * @param mixed $portrait
      *
