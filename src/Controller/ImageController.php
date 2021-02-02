@@ -33,7 +33,6 @@ class ImageController extends AbstractController
                         $newMainImage->setmain(true);
                     }
                 }
-                //suppression du fichier
                 $name = $image->getName();
                 if ($this->getParameter('images_directory').'/'.$name) {
                     unlink($this->getParameter('images_directory').'/'.$name);
@@ -41,7 +40,6 @@ class ImageController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($image);
                 $em->flush();
-
                 return new JsonResponse(['success' => 1]);
             }
         } else {
