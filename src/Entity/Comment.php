@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,6 +29,9 @@ class Comment
     private $figure;
 
     /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $date;
@@ -71,13 +74,6 @@ class Comment
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
     }
 
     public function getWriter(): ?User

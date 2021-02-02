@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Media;
+namespace App\Video;
 
 use App\Entity\Figure;
 use App\Entity\Media;
@@ -8,7 +8,7 @@ use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddMedia
+class AddVideo
 {
     protected $mediaRepository;
     protected $figureRepository;

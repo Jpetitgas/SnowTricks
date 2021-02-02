@@ -43,14 +43,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            //import du fichier portrait
-            $portrait = $form->get('portrait')->getData();
-            if (!$portrait) {
-                $this->upLoadPortrait->upLoadDefault($user);
-            } else {
-                $this->upLoadPortrait->upLoad($portrait, $user);
-            }
-
+            $this->upLoadPortrait->manager($form->get('portrait')->getData(), $user, "create");
             $user->setDate(new DateTime());
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -99,18 +92,11 @@ class RegistrationController extends AbstractController
         if (!$user) {
             throw $this->createNotFoundException("Cet utilisateur n'existe pas");
         }
-
         $form = $this->createForm(EditUserFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            //import du fichier portrait
-            $portrait = $form->get('portrait')->getData();
-            if ($portrait) {
-                $this->upLoadPortrait->upLoad($portrait, $user);
-            }
-
+            $this->upLoadPortrait->manager($form->get('portrait')->getData(), $user, "edit");
             $entityManager->flush();
 
             return $this->RedirectToRoute('main');
