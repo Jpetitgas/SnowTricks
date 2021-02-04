@@ -2,15 +2,16 @@
 
 namespace App\Image;
 
-use App\Repository\FigureRepository;
+use App\Entity\Image;
 use App\Repository\ImageRepository;
+use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MainImage
 {
     protected $imageRepository;
     protected $figureRepository;
-
     protected $em;
 
     public function __construct(ImageRepository $imageRepository, EntityManagerInterface $em, FigureRepository $figureRepository)
@@ -48,5 +49,20 @@ class MainImage
         $this->em->flush();
 
         return true;
+    }
+
+    public function firstImageMain(Image $image, $allImage)
+    {
+        if ($image->getMain()) {
+            if ($image == $allImage[0]) {
+                $newMainImage = $allImage[1];
+                $newMainImage->setmain(true);
+            } else {
+                $newMainImage = $allImage[0];
+                $newMainImage->setmain(true);
+            }
+        }
+        return $image->getName();
+        
     }
 }
